@@ -1,8 +1,10 @@
+// eslint-disable-next-line no-unused-vars
 import React from 'react';
 import { PiGameControllerFill } from "react-icons/pi";
 import { FaShoppingCart, FaUserNinja } from "react-icons/fa";
 import { Footer } from './Footer';
-
+// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line react/prop-types
 export const Header = ({ children }) => {
     return (
         <div>
