@@ -1,25 +1,20 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react';
 import { Header } from './Header';
+import { BreadCrumbs } from './BreadCrumbs';
+import { ProductCardContainer } from './ProductCardContainer';
 
 export const Home = () => {
+
+  const breadcrumbs = [
+    { label: "Home", href: "/"},
+    { label: "Laptops", href: "/home"}
+  ]
   return (
     <div>
       <Header>
-        <div className="mt-40 text-center">
-          <h1 className="text-3xl font-bold">Home</h1>
-          <p className="text-lg mt-4">🦄 Welcome to the React Native Workshop! 🦄</p>
-          <h1 className="text-3xl font-bold">Home</h1>
-          <p className="text-lg mt-4">🦄 Welcome to the React Native Workshop! 🦄</p>
-          <h1 className="text-3xl font-bold">Home</h1>
-          <p className="text-lg mt-4">🦄 Welcome to the React Native Workshop! 🦄</p>
-          <h1 className="text-3xl font-bold">Home</h1>
-          <p className="text-lg mt-4">🦄 Welcome to the React Native Workshop! 🦄</p>
-          <h1 className="text-3xl font-bold">Home</h1>
-          <p className="text-lg mt-4">🦄 Welcome to the React Native Workshop! 🦄</p>
-          <h1 className="text-3xl font-bold">Home</h1>
-          <p className="text-lg mt-4">🦄 Welcome to the React Native Workshop! 🦄</p>
-        </div>
+        <BreadCrumbs crumbs={breadcrumbs}></BreadCrumbs>
+        <ProductCardContainer></ProductCardContainer>
       </Header>
     </div>
   );
