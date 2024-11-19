@@ -4,13 +4,13 @@ const router=require("./router/auth-router");
 
 app.use("/api/auth",router);
  
-app.get('/', (req,res)=>{
-    res.send('Hello World from server')
-})
+// app.get('/', (req,res)=>{
+//     res.send('Hello World from server')
+// })
  
-app.get('/register', (req,res)=>{
-    res.send('Hello World from register')
-})
+// app.get('/register', (req,res)=>{
+//     res.send('Hello World from register')
+// })
  
 const PORT=5000;
 
