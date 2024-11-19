@@ -1,6 +1,6 @@
 const express = require('express');
-const Laptop = require('../model/laptopSchema'); // Import Laptop schema
-const Cart = require('../model/cartSchema'); // Import Cart schema
+const Laptop = require('../model/laptop-Schema'); // Import Laptop schema
+const Cart = require('../model/cart-Schema'); // Import Cart schema
 const router = express.Router();
 
 // 1. List all laptops
