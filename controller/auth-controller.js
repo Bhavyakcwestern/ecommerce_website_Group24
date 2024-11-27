@@ -12,7 +12,7 @@ const register = async (req, res) => {
       const data = req.body;
       console.log(req.body);
       // res.status(201).json({ message: "User registered successfully" });
-      res.status(200).json({ msg: data });
+      res.status(200).json({ message: data });
     } catch (error) {
       res.status(500).json({ message: "Internal server error" });
     }
