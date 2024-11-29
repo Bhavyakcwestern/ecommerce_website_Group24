@@ -13,6 +13,7 @@ export const products = [
       storage: '512GB SSD',
       gpu: 'NVIDIA GTX 1650',
       stock: 20,
+      description: "some product description in detail",
       imageUrls: [
         "https://via.placeholder.com/150/0000FF/FFFFFF?text=Reebok+1",
         "https://via.placeholder.com/150/4682B4/FFFFFF?text=Reebok+2",
@@ -33,6 +34,7 @@ export const products = [
       storage: '256GB SSD',
       gpu: 'Integrated Radeon Vega 8',
       stock: 50,
+      description: "some product description in detail",
       imageUrls: [
         "https://via.placeholder.com/150/0000FF/FFFFFF?text=Reebok+1",
         "https://via.placeholder.com/150/4682B4/FFFFFF?text=Reebok+2",
@@ -53,6 +55,7 @@ export const products = [
         storage: '512GB SSD',
         gpu: 'NVIDIA GTX 1650',
         stock: 20,
+        description: "some product description in detail",
         imageUrls: [
           "https://via.placeholder.com/150/0000FF/FFFFFF?text=Reebok+1",
           "https://via.placeholder.com/150/4682B4/FFFFFF?text=Reebok+2",
@@ -73,6 +76,7 @@ export const products = [
         storage: '256GB SSD',
         gpu: 'Integrated Radeon Vega 8',
         stock: 50,
+        description: "some product description in detail",
         imageUrls: [
           "https://via.placeholder.com/150/0000FF/FFFFFF?text=Reebok+1",
           "https://via.placeholder.com/150/4682B4/FFFFFF?text=Reebok+2",
@@ -93,6 +97,7 @@ export const products = [
         storage: '512GB SSD',
         gpu: 'NVIDIA GTX 1650',
         stock: 20,
+        description: "some product description in detail",
         imageUrls: [
           "https://via.placeholder.com/150/0000FF/FFFFFF?text=Reebok+1",
           "https://via.placeholder.com/150/4682B4/FFFFFF?text=Reebok+2",
@@ -113,6 +118,7 @@ export const products = [
         storage: '256GB SSD',
         gpu: 'Integrated Radeon Vega 8',
         stock: 50,
+        description: "some product description in detail",
         imageUrls: [
           "https://via.placeholder.com/150/0000FF/FFFFFF?text=Reebok+1",
           "https://via.placeholder.com/150/4682B4/FFFFFF?text=Reebok+2",

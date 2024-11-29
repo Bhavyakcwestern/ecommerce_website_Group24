@@ -3,6 +3,7 @@ import React from 'react';
 import { CardCarousal } from './CardCarousal';
 import { products } from '../assets/products'; // Import the updated dummy data
 import { FaBasketballBall } from 'react-icons/fa';
+import { TruncateText } from '../utils/utils';
 
 // reference: https://componentland.com/component/product-card-2
 // reference: https://pagedone.io/docs/carousel
@@ -11,10 +12,10 @@ export const ProductCardContainer = () => {
     return (
       <div className="w-full p-6">  
         {/* Responsive Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <a className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {/* Map through products array to dynamically render cards */}
           {laptops.map((product) => (
-            <div
+            <a href={`/product-page/${product.id}`}
               key={product.id}
               className="relative m-auto flex w-full max-w-xs flex-col rounded-lg border border-gray-100 bg-white shadow-md"
             >
@@ -60,14 +61,14 @@ export const ProductCardContainer = () => {
                 {/* Laptop details - Show if space available */}
                 <div className="mt-0 text-sm text-gray-700 grid grid-cols-1 gap-2">
                   <div className="flex gap-5 flex-wrap"> 
-                  <p><strong>CPU:</strong> {product.cpu}</p>
-                  <p><strong>OS:</strong> {product.os}</p>
+                  <p><strong>CPU:</strong> {TruncateText(product.cpu, 8)}</p>
+                  <p><strong>OS:</strong> {TruncateText(product.os, 12)}</p>
                   </div>
                   
-                  <p><strong>Memory:</strong> {product.memory}</p>
-                  <p><strong>Storage:</strong> {product.storage}</p>
-                  <p><strong>GPU:</strong> {product.gpu}</p>
-                  <p><strong>Available Stock:</strong> {product.stock}</p>
+                  <p><strong>Memory:</strong> {TruncateText(product.memory, 18)}</p>
+                  <p><strong>Storage:</strong> {TruncateText(product.storage, 18)}</p>
+                  <p><strong>GPU:</strong> {TruncateText(product.gpu, 18)}</p>
+                  <p><strong>Available Stock:</strong> {TruncateText(product.stock, 18)}</p>
                 </div>
   
                 <a
@@ -78,9 +79,9 @@ export const ProductCardContainer = () => {
                   Add to cart
                 </a>
               </div>
-            </div>
+            </a>
           ))}
-        </div>
+        </a>
       </div>
     );
   };

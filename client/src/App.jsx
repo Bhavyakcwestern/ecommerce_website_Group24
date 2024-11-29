@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-vars
-import { Home } from "./components/Home";
+import { Home, AccessoriesPage, Cart, LaptopsPage, ProductDetailsPage } from "./components/Main";
+import { ProductPage } from "./components/ProductPage";
 import { SignIn } from "./components/SignIn";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -15,6 +16,10 @@ export default function App() {
         <Routes>
           <Route path="/" element={<SignIn />}></Route>
           <Route path="/home" element={<Home />}></Route>
+          <Route path="/laptops" element={<LaptopsPage />}></Route>
+          <Route path="/accessories" element={<AccessoriesPage />}></Route>
+          <Route path="/cart" element={<Cart />}></Route>
+          <Route path="/product-page/:productId" element={<ProductDetailsPage />}></Route>
         </Routes>
       </div>
     </Router>

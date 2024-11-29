@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react';
 
-// eslint-disable-next-line react/prop-types
+// reference: https://postsrc.com/components/tailwind-css-breadcrumbs/basic-breadcrumbs-component
 export const BreadCrumbs = ({ crumbs }) => {
     return (
         <div className="bg-black p-4 flex items-center flex-wrap">
