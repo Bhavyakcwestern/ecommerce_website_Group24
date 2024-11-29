@@ -1,3 +1,5 @@
+const User = require('../Model/user_model');
+
 const home = async (req, res) => {
     try {
         res.status(200).send('Hello World from server router js ***');
@@ -9,10 +11,20 @@ const home = async (req, res) => {
 
 const register = async (req, res) => {
     try {
-      const data = req.body;
+      const {username,email,phone,password}=req.body;
+
+       //User Validation if user email id exists or not
+      const userExist=await User.findOne({email:email});
+
+      if(userExist){
+        return res.status(400).json({msg:"email already exist"});
+      } 
+      
       console.log(req.body);
-      // res.status(201).json({ message: "User registered successfully" });
-      res.status(200).json({ message: data });
+      
+      await User.create({username,email,phone,password});
+      res.status(200).json({ msg: "User registered successfully" });
+      
     } catch (error) {
       res.status(500).json({ message: "Internal server error" });
     }

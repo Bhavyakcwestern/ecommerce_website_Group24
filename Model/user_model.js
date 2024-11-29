@@ -23,4 +23,4 @@ const userSchema=new mongoose.Schema({
 //Connecting with the Collection/Model
 const users=new mongoose.model("Users",userSchema);
 
-model.exports=users
+module.exports=users
