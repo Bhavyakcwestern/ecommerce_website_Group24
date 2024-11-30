@@ -1,32 +1,22 @@
-//Middleware for .env so that URI/password gets hidden 
-require('dotenv').config();
+require('dotenv').config();  // Make sure the environment variables are loaded
 
-const express=require("express");
-const app=express();
+const express = require("express");
+const app = express();
 
-const router=require("./router/auth-router");
-const connectDB=require("./utlis/db")
+const router = require("./router/auth-router");
+const laptopRouter = require("./router/laptop-router");  // Add the new router for laptop APIs
+const connectDB = require("./utlis/db");
 
-//Middleware
-app.use(express.json());
+// Middleware
+app.use(express.json());  // Body parser to handle JSON requests
 
-app.use("/api/auth",router);
+// Register Routes
+app.use("/api/auth", router);  // Auth-related routes
+app.use("/api/laptops", laptopRouter);  // Laptop-related routes
 
-connectDB().then(()=>{
-    
-    app.listen(PORT,()=>{
-        console.log(`Server is running at port : ${PORT}`);
-        
+// Start the server after connecting to the database
+connectDB().then(() => {
+    app.listen(5000, () => {
+        console.log("Server is running at port: 5000");
     });
- })
-// app.get('/', (req,res)=>{
-//     res.send('Hello World from server')
-// })
- 
-// app.get('/register', (req,res)=>{
-//     res.send('Hello World from register')
-// })
- 
-const PORT=5000;
-
-
+});
