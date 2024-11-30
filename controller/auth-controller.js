@@ -23,9 +23,9 @@ const register = async (req, res) => {
       console.log(req.body);
       const userCreated=await User.create({username,email,phone,password});
 
-      res.status(201).json({ msg: "User registered successfully",
+      res.status(201).json({ msg: userCreated,
                             token:await userCreated.generateToken,
-                            
+                            userId:userCreated._id.toString(),
        });
       
     }
