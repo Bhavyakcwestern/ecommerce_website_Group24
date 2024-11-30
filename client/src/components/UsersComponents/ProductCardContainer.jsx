@@ -1,9 +1,9 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react';
 import { CardCarousal } from './CardCarousal';
-import { products } from '../assets/products'; // Import the updated dummy data
+import { products } from '../../assets/products'; // Import the updated dummy data
 import { FaBasketballBall } from 'react-icons/fa';
-import { TruncateText } from '../utils/utils';
+import { TruncateText } from '../../utils/utils';
 
 // reference: https://componentland.com/component/product-card-2
 // reference: https://pagedone.io/docs/carousel

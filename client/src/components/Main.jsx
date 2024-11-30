@@ -2,12 +2,14 @@
 import React from 'react';
 import { Header } from './Header';
 import { BreadCrumbs } from './BreadCrumbs';
-import { ProductCardContainer } from './ProductCardContainer';
-import { CartPageComponent } from './CartPageComponent';
-import { HomePageComponent } from './HomePageComponent';
-import { ProductPage } from './ProductPage';
+import { ProductCardContainer } from './UsersComponents/ProductCardContainer';
+import { CartPageComponent } from './UsersComponents/CartPageComponent';
+import { HomePageComponent } from './UsersComponents/HomePageComponent';
+import { ProductPage } from './UsersComponents/ProductPage';
 import { products } from '../assets/products';
 import { useParams } from 'react-router-dom';
+import { AdminPageComponent } from './AdminComponents/AdminPageComponent';
+import { ManageProductsPageComponents } from './AdminComponents/ManageProductsPageComponents';
 
 export const LaptopsPage = () => {
 
@@ -93,6 +95,40 @@ export const ProductDetailsPage = () => {
       <Header viewSearchOptions={false}>
         <BreadCrumbs crumbs={breadcrumbs}></BreadCrumbs>
         <ProductPage productInfo={productInfo}></ProductPage >
+      </Header>
+    </div>
+  );
+};
+
+
+// admins
+export const AdminPage = () => {
+
+  const breadcrumbs = [
+    { label: "Admin", href: "/admin"},
+  ]
+  return (
+    <div>
+      <Header>
+        <BreadCrumbs crumbs={breadcrumbs}></BreadCrumbs>
+        <AdminPageComponent></AdminPageComponent>
+      </Header>
+    </div>
+  );
+};
+
+// admins
+export const ManageProductsPage = () => {
+
+  const breadcrumbs = [
+    { label: "Admin", href: "/admin"},
+    { label: "Manage Products", href: "/manage-products"},
+  ]
+  return (
+    <div>
+      <Header>
+        <BreadCrumbs crumbs={breadcrumbs}></BreadCrumbs>
+        <ManageProductsPageComponents></ManageProductsPageComponents>
       </Header>
     </div>
   );
