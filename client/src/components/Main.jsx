@@ -10,6 +10,7 @@ import { products } from '../assets/products';
 import { useParams } from 'react-router-dom';
 import { AdminPageComponent } from './AdminComponents/AdminPageComponent';
 import { ManageProductsPageComponents } from './AdminComponents/ManageProductsPageComponents';
+import { ManageProductDetailsPage } from './AdminComponents/ManageProductDetailsPage';
 
 export const LaptopsPage = () => {
 
@@ -122,13 +123,35 @@ export const ManageProductsPage = () => {
 
   const breadcrumbs = [
     { label: "Admin", href: "/admin"},
-    { label: "Manage Products", href: "/manage-products"},
+    { label: "Manage Products", href: "/admin/manage"},
   ]
   return (
     <div>
-      <Header>
+      <Header viewSearchOptions={false}>
         <BreadCrumbs crumbs={breadcrumbs}></BreadCrumbs>
         <ManageProductsPageComponents></ManageProductsPageComponents>
+      </Header>
+    </div>
+  );
+};
+// admins
+export const ManageProductDetails = () => {
+  const { productId } = useParams();
+  const productInfo = products.find((laptop) => laptop.id === parseInt(productId))
+  if (!productInfo) {
+    return <div>Product not found</div>
+  }
+  console.log("product_info ", productInfo)
+  const breadcrumbs = [
+    { label: "Admin", href: "/admin"},
+    { label: "Manage Products", href: "/admin/manage"},
+    { label: productInfo.name, href: "/admin/manage/" + productInfo.id}
+  ]
+  return (
+    <div>
+      <Header viewSearchOptions={false}>
+        <BreadCrumbs crumbs={breadcrumbs}></BreadCrumbs>
+        <ManageProductDetailsPage productInfo={productInfo}></ManageProductDetailsPage>
       </Header>
     </div>
   );

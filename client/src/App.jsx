@@ -1,10 +1,9 @@
 // eslint-disable-next-line no-unused-vars
-import { Home, AccessoriesPage, Cart, LaptopsPage, ProductDetailsPage, AdminPage, ManageProductsPage } from "./components/Main";
+import { Home, AccessoriesPage, Cart, LaptopsPage, ManageProductsPage, ManageProductDetails } from "./components/Main";
 import { ProductPage } from "./components/UsersComponents/ProductPage";
 import { SignIn } from "./components/SignIn";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AdminPageComponent } from "./components/AdminComponents/AdminPageComponent";
-import { ManageProductsPageComponents } from "./components/AdminComponents/ManageProductsPageComponents";
 
 
 export default function App() {
@@ -21,9 +20,10 @@ export default function App() {
           <Route path="/laptops" element={<LaptopsPage />}></Route>
           <Route path="/accessories" element={<AccessoriesPage />}></Route>
           <Route path="/cart" element={<Cart />}></Route>
-          <Route path="/product-page/:productId" element={<ProductDetailsPage />}></Route>
-          <Route path="/admin" element={<AdminPage />}></Route>
-          <Route path="/admin/manage-products" element={<ManageProductsPage />}></Route>
+          <Route path="/product-page/:productId" element={<ProductPage />}></Route>
+          <Route path="/admin" element={<AdminPageComponent />}></Route>
+          <Route path="/admin/manage/" element={<ManageProductsPage />}></Route>
+          <Route path="/admin/manage/:productId" element={<ManageProductDetails />}></Route>
         </Routes>
       </div>
     </Router>

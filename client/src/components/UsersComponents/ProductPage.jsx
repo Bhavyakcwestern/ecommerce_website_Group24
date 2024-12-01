@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+// eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
 import { FaBasketballBall } from "react-icons/fa";
 
@@ -6,6 +8,7 @@ export const ProductPage = ({ productInfo }) => {
         return <p>Loading...</p>;
     }
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [activeImg, setActiveImg] = useState(productInfo.imageUrls[0]);
 
     return (
