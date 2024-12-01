@@ -10,10 +10,9 @@ const { signupValidation, loginValidation } = require("../Middlewares/auth-Valid
 // });
 
 router.route('/').get(auth_controller.home);
-// router.route('/login').post(auth_controller.login);
-router.route('/signup').post(auth_controller.signup);
+router.route('/login').post(loginValidation,auth_controller.login);
+router.route('/signup').post(signupValidation,auth_controller.signup);
 
-// router.post('/login', loginValidation, auth_controller.login);
-// router.post('/signup', signupValidation,auth_controller.signup);
+
 
 module.exports = router;

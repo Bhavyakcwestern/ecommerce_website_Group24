@@ -17,26 +17,44 @@ const home = async (req, res) => {
 const signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    const user = await User.findOne({ email });
-    if (user) {
-        return res.status(409)
-            .json({ message: 'User is already exist, you can login', success: false });
+
+    // Validate input
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "All fields are required", success: false });
     }
-    const UserModel= new UserModel({ name, email, password });
-    UserModel.password = await bcrypt.hash(password, 10);
-    await UserModel.save();
-    res.status(201)
-        .json({
-            message: "Signup successfully",
-            success: true
-        })
-  } catch (err) {
+
+    // Validate password type
+    if (typeof password !== 'string' || password.trim() === '') {
+      return res.status(400).json({ message: "Password must be a non-empty string", success: false });
+    }
+
+    const user = await UserModel.findOne({ email });
+    if (user) {
+      return res.status(409).json({ message: 'User already exists, you can log in', success: false });
+    }
+
+    // Create a new user instance
+    const newUser = new UserModel({ name, email, password });
+
+    // Log the password before hashing for debugging
+    console.log('Password before hashing:', password);
+
+    // Hash the password
+    newUser.password = await bcrypt.hash(password, 10);
+
+    // Save the new user to the database
+    await newUser.save();
+
+    res.status(201).json({ message: "Signup successfully", success: true });
+  } 
+  catch (err) {
+    console.error('Error in signup:', err); // Log the exact error
     res.status(500)
         .json({
             message: "Internal server errror in catch",
             success: false
         })
-  }
+    }
   };
 
 

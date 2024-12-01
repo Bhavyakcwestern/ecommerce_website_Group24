@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const {jwt}=require("jsonwebtoken");
 
 const userSchema = new mongoose.Schema({
-    username: {
+    name: {
         type: String,
         required: true,
     },
@@ -13,8 +13,7 @@ const userSchema = new mongoose.Schema({
         unique: true,
     },
     address: {
-        type: String,
-        required: true,
+        type: String
     },
     password: {
         type: String,
@@ -64,6 +63,6 @@ const userSchema = new mongoose.Schema({
 // }
 
 // Connecting with the Collection/Model
-const Users = mongoose.model("Users", userSchema);
+const UserModel = mongoose.model("Users", userSchema);
 
-module.exports = {Users};
+module.exports = UserModel;
