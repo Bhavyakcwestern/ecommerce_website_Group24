@@ -14,6 +14,15 @@ app.use(express.json());  // Body parser to handle JSON requests
 app.use(bodyParser.json());
 app.use(cors());
 
+// add api logger
+const morgan = require('morgan');
+app.use(morgan('combined'));
+
+// Routes
+app.get("/", (req, res) => {
+    res.send("Welcome to the Laptop Store API!");
+});
+
 // Register Routes
 app.use("/api/auth", router);  // Auth-related routes
 app.use("/api/laptops", laptopRouter);  // Laptop-related routes
