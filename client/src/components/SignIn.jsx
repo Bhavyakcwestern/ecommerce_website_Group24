@@ -1,21 +1,34 @@
+// SignIn.jsx
 // eslint-disable-next-line no-unused-vars
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-// ref: https://www.youtube.com/watch?v=Rp9LgClUIYc
-export const SignIn = () => {
-  const [role, setRole] = useState('user'); // Toggle between admin and user
+export const SignIn = ({ setIsLoggedIn }) => {
+  const [role, setRole] = useState("user"); // Toggle between admin and user
   const [isSignUp, setIsSignUp] = useState(false); // Toggle between Sign In and Sign Up
+  const navigate = useNavigate();
 
+  const handleSignIn = () => {
+    // Simulate authentication
+    setIsLoggedIn(true);
+
+    // Redirect user based on role
+    if (role === "admin") {
+      navigate("/admin");
+    } else {
+      navigate("/home");
+    }
+  };
 
   return (
     <div className="flex w-full h-screen">
       {/* Left Half */}
       <div className="w-full lg:w-1/2 h-full flex flex-col items-center justify-center">
         <h1 className="text-2xl font-bold mb-4">
-          {isSignUp ? 'Create an Account' : 'Welcome Back'}
+          {isSignUp ? "Create an Account" : "Welcome Back"}
         </h1>
         <p className="text-gray-600 mb-6 text-center">
-          {isSignUp ? 'Please fill in the details to sign up.' : 'Please enter your details.'}
+          {isSignUp ? "Please fill in the details to sign up." : "Please enter your details."}
         </p>
         <div className="w-3/4">
           <div className="mb-4">
@@ -57,13 +70,16 @@ export const SignIn = () => {
               <option value="admin">Admin</option>
             </select>
           </div>
-          <button className="w-full bg-black text-white py-2 rounded-md hover:bg-slate-800">
-            {isSignUp ? 'Sign Up' : 'Sign In'}
+          <button
+            className="w-full bg-black text-white py-2 rounded-md hover:bg-slate-800"
+            onClick={handleSignIn}
+          >
+            {isSignUp ? "Sign Up" : "Sign In"}
           </button>
           <p className="text-sm text-center mt-4">
             {isSignUp ? (
               <div>
-                Already have an account?{' '}
+                Already have an account?{" "}
                 <span
                   className="text-blue-500 cursor-pointer hover:underline"
                   onClick={() => setIsSignUp(false)}
@@ -73,7 +89,7 @@ export const SignIn = () => {
               </div>
             ) : (
               <div>
-                Don&apos;t have an account?{' '}
+                Don&apos;t have an account?{" "}
                 <span
                   className="text-blue-500 cursor-pointer hover:underline"
                   onClick={() => setIsSignUp(true)}
