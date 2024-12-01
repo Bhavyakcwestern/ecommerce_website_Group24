@@ -12,8 +12,8 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    phone: {
-        type: Number,
+    address: {
+        type: String,
         required: true,
     },
     password: {
@@ -26,44 +26,44 @@ const userSchema = new mongoose.Schema({
     },
 });
 
-// Secure the password with bcrypt before saving
-userSchema.pre('save', async function (next) {
-    const user = this;
+// // Secure the password with bcrypt before saving
+// userSchema.pre('save', async function (next) {
+//     const user = this;
 
-    // Only hash the password if it has been modified (or is new)
-    if (!user.isModified("password")) {
-        return next();
-    }
+//     // Only hash the password if it has been modified (or is new)
+//     if (!user.isModified("password")) {
+//         return next();
+//     }
 
-    try {
-        const saltRound = 10;
-        const hashedPassword = await bcrypt.hash(user.password, saltRound);
-        user.password = hashedPassword;
-        next();
-    } catch (error) {
-        next(error);
-    }
-});
+//     try {
+//         const saltRound = 10;
+//         const hashedPassword = await bcrypt.hash(user.password, saltRound);
+//         user.password = hashedPassword;
+//         next();
+//     } catch (error) {
+//         next(error);
+//     }
+// });
 
-//JWT-Json Web Token
-userSchema.method.generateToken= async function(){
-    try {
-        return jwt.sign(
-        {
-            userId:this._id.toString(),
-            email:this.email,
-            admin:this.admin,
-        },
-        process.env.JWT_SECRETKEY,
-        {
-            expiresIn: "30d",
-        });
-    } catch (error) {
-        console.error(error);
-    }
-}
+// //JWT-Json Web Token
+// userSchema.method.generateToken= async function(){
+//     try {
+//         return jwt.sign(
+//         {
+//             userId:this._id.toString(),
+//             email:this.email,
+//             admin:this.admin,
+//         },
+//         process.env.JWT_SECRETKEY,
+//         {
+//             expiresIn: "30d",
+//         });
+//     } catch (error) {
+//         console.error(error);
+//     }
+// }
 
 // Connecting with the Collection/Model
 const Users = mongoose.model("Users", userSchema);
 
-module.exports = Users;
+module.exports = {Users};

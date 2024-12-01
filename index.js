@@ -2,6 +2,8 @@ require('dotenv').config();  // Make sure the environment variables are loaded
 
 const express = require("express");
 const app = express();
+const cors=require('cors');
+const bodyParser=require('body-parser'); 
 
 const router = require("./router/auth-router");
 const laptopRouter = require("./router/laptop-router");  // Add the new router for laptop APIs
@@ -9,6 +11,8 @@ const connectDB = require("./utlis/db");
 
 // Middleware
 app.use(express.json());  // Body parser to handle JSON requests
+app.use(bodyParser.json());
+app.use(cors());
 
 // Register Routes
 app.use("/api/auth", router);  // Auth-related routes
