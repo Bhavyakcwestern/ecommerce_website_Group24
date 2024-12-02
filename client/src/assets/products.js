@@ -1,7 +1,7 @@
 export const products = [
     {
       id: 1,
-      name: 'Laptop A',
+      name: 'product A',
       brand: 'Dell',
       rating: 4.5,
       price: 1200,
@@ -22,7 +22,7 @@ export const products = [
     },
     {
       id: 2,
-      name: 'Laptop B',
+      name: 'product B',
       brand: 'HP',
       rating: 4.2,
       price: 1000,
@@ -43,7 +43,7 @@ export const products = [
     },
     {
         id: 1,
-        name: 'Laptop A',
+        name: 'product A',
         brand: 'Dell',
         rating: 4.5,
         price: 1200,
@@ -64,7 +64,7 @@ export const products = [
       },
       {
         id: 2,
-        name: 'Laptop B',
+        name: 'product B',
         brand: 'HP',
         rating: 4.2,
         price: 1000,
@@ -85,7 +85,7 @@ export const products = [
       },
       {
         id: 1,
-        name: 'Laptop A',
+        name: 'product A',
         brand: 'Dell',
         rating: 4.5,
         price: 1200,
@@ -106,7 +106,7 @@ export const products = [
       },
       {
         id: 2,
-        name: 'Laptop B',
+        name: 'product B',
         brand: 'HP',
         rating: 4.2,
         price: 1000,

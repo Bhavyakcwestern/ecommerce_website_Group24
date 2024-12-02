@@ -4,7 +4,7 @@ import {
   Home,
   AccessoriesPage,
   Cart,
-  LaptopsPage,
+  productsPage,
   ProductDetailsPage,
   AdminPage,
   ManageProductsPage,
@@ -51,10 +51,10 @@ export default function App() {
             }
           />
           <Route
-            path="/laptops"
+            path="/products"
             element={
               <ProtectedRoute userType="user">
-                <LaptopsPage />
+                <productsPage />
               </ProtectedRoute>
             }
           />

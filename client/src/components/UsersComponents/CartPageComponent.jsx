@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 const cartItems = [
     {
         id: 1,
-        name: 'Laptop A',
+        name: 'product A',
         brand: 'Dell',
         rating: 4.5,
         price: 1200,
@@ -27,7 +27,7 @@ const cartItems = [
     },
     {
         id: 2,
-        name: 'Laptop B',
+        name: 'product B',
         brand: 'HP',
         rating: 4.2,
         price: 1000,

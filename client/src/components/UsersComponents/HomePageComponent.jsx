@@ -6,21 +6,21 @@ export const HomePageComponent = () => {
             <section className="w-screen py-5">
                 <div className="mx-auto grid max-w-screen-lg grid-cols-1 gap-5 p-5 sm:grid-cols-2 md:grid-cols-2 lg:gap-10">
 
-                    {/* Laptop Card */}
-                    <a href='/laptops' className="group h-full overflow-hidden rounded-lg border-2 border-gray-200 border-opacity-60 shadow-lg">
+                    {/* product Card */}
+                    <a href='/products' className="group h-full overflow-hidden rounded-lg border-2 border-gray-200 border-opacity-60 shadow-lg">
                         <div
                             key={1}
                             className={`flex-shrink-0 w-full h-60 bg-yellow-100 rounded-2xl flex justify-center items-center`}
                         >
                         </div>
                         <div className="py-4 px-6">
-                            <h2 className="title-font text-sm font-semibold uppercase tracking-widest text-orange-600">Laptops</h2>
-                            <h1 className="title-font mb-3 text-xl font-extrabold tracking-wide text-gray-800">Explore High-Performance Laptops</h1>
-                            <p className="line-clamp-6 mb-3 text-gray-500">Discover the latest models with top-notch specifications for work, gaming, and entertainment. Find the perfect laptop for your needs.</p>
+                            <h2 className="title-font text-sm font-semibold uppercase tracking-widest text-orange-600">products</h2>
+                            <h1 className="title-font mb-3 text-xl font-extrabold tracking-wide text-gray-800">Explore High-Performance products</h1>
+                            <p className="line-clamp-6 mb-3 text-gray-500">Discover the latest models with top-notch specifications for work, gaming, and entertainment. Find the perfect product for your needs.</p>
                         </div>
                         <div className="flex justify-center px-6 pb-4">
                             <button className="group flex items-center justify-center rounded-md bg-yellow-500 px-6 py-2 text-white transition hover:bg-yellow-600">
-                                <span className="font-bold">Shop Laptops</span>
+                                <span className="font-bold">Shop products</span>
                                 <svg
                                     className="ml-2 h-6 w-6 transition-transform group-hover:translate-x-1"
                                     xmlns="http://www.w3.org/2000/svg"

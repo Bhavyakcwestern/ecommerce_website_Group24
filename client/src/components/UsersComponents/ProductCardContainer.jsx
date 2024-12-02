@@ -8,13 +8,13 @@ import { TruncateText } from '../../utils/utils';
 // reference: https://componentland.com/component/product-card-2
 // reference: https://pagedone.io/docs/carousel
 export const ProductCardContainer = () => {
-    const laptops = products;
+    const products = products;
     return (
       <div className="w-full p-6">  
         {/* Responsive Grid */}
         <a className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {/* Map through products array to dynamically render cards */}
-          {laptops.map((product) => (
+          {products.map((product) => (
             <a href={`/product-page/${product.id}`}
               key={product.id}
               className="relative m-auto flex w-full max-w-xs flex-col rounded-lg border border-gray-100 bg-white shadow-md"
@@ -58,7 +58,7 @@ export const ProductCardContainer = () => {
                   
                 </div>
   
-                {/* Laptop details - Show if space available */}
+                {/* product details - Show if space available */}
                 <div className="mt-0 text-sm text-gray-700 grid grid-cols-1 gap-2">
                   <div className="flex gap-5 flex-wrap"> 
                   <p><strong>CPU:</strong> {TruncateText(product.cpu, 8)}</p>

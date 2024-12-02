@@ -5,8 +5,10 @@ const app = express();
 const cors=require('cors');
 const bodyParser=require('body-parser'); 
 
-const router = require("./router/auth-router");
-const laptopRouter = require("./router/laptop-router");  // Add the new router for laptop APIs
+const router = require("./router/authRouters");
+const adminRouter = require("./router/adminRouters")
+const cartRouter = require("./router/cartRouters")
+const productRouter = require("./router/productRouters")
 const connectDB = require("./utlis/db");
 
 // Middleware
@@ -20,12 +22,14 @@ app.use(morgan('combined'));
 
 // Routes
 app.get("/", (req, res) => {
-    res.send("Welcome to the Laptop Store API!");
+    res.send("Welcome to the product Store API!");
 });
 
 // Register Routes
-app.use("/api/auth", router);  // Auth-related routes
-app.use("/api/laptops", laptopRouter);  // Laptop-related routes
+app.use("/v1/auth", router);  // Auth-related routes
+app.use("/v1/admin/", adminRouter);
+app.use("/v1/user/", cartRouter);
+app.use("/v1/products/", productRouter);
 
 // Start the server after connecting to the database
 connectDB().then(() => {

@@ -8,7 +8,7 @@ export const Home = () => {
 
   const breadcrumbs = [
     { label: "Home", href: "/"},
-    { label: "Laptops", href: "/home"}
+    { label: "products", href: "/home"}
   ]
   return (
     <div>

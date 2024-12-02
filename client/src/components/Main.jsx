@@ -11,11 +11,11 @@ import { useParams } from 'react-router-dom';
 import { AdminPageComponent } from './AdminComponents/AdminPageComponent';
 import { ManageProductsPageComponents } from './AdminComponents/ManageProductsPageComponents';
 
-export const LaptopsPage = () => {
+export const productsPage = () => {
 
   const breadcrumbs = [
     { label: "Home", href: "/home"},
-    { label: "Laptops", href: "/laptops"}
+    { label: "products", href: "/products"}
   ]
   return (
     <div>
@@ -47,7 +47,7 @@ export const Cart = () => {
 
   const breadcrumbs = [
     { label: "Home", href: "/home"},
-    { label: "Laptops", href: "/home"},
+    { label: "products", href: "/home"},
     { label: "Cart", href: "/cart" },
 
   ]
@@ -79,16 +79,16 @@ export const Home = () => {
 
 export const ProductDetailsPage = () => {
   const { productId } = useParams();
-  const productInfo = products.find((laptop) => laptop.id === parseInt(productId))
+  const productInfo = products.find((product) => product.id === parseInt(productId))
   if (!productInfo) {
     return <div>Product not found</div>
   }
   console.log("product_info ", productInfo)
   const breadcrumbs = [
     { label: "Home", href: "/home"},
-    // todo: change label based on product type - laptops : accessories
-    { label: "Laptops", href: "/laptops"},
-    { label: productInfo.name, href: "/laptops/" + productInfo.id}
+    // todo: change label based on product type - products : accessories
+    { label: "products", href: "/products"},
+    { label: productInfo.name, href: "/products/" + productInfo.id}
   ]
   return (
     <div>

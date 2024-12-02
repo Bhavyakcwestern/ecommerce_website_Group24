@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const auth_controller = require("../controller/auth-controller");
-const { signupValidation, loginValidation } = require("../Middlewares/auth-Validation");
+const auth_controller = require("../controllers/authController");
 
 // Use `.get()` to define GET routes
 // router.get('/', (req, res) => {
@@ -10,8 +9,8 @@ const { signupValidation, loginValidation } = require("../Middlewares/auth-Valid
 // });
 
 router.route('/').get(auth_controller.home);
-router.route('/login').post(loginValidation,auth_controller.login);
-router.route('/signup').post(signupValidation,auth_controller.signup);
+router.route('/login').post(auth_controller.login);
+router.route('/signup').post(auth_controller.signup);
 
 
 
