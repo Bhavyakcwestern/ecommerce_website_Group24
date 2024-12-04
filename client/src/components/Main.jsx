@@ -11,6 +11,8 @@ import { useParams } from 'react-router-dom';
 import { AdminPageComponent } from './AdminComponents/AdminPageComponent';
 import { ManageProductsPageComponents } from './AdminComponents/ManageProductsPageComponents';
 import { SearchOptions } from './SearchOptions';
+import { ManageProductDetailsPageComponent } from './AdminComponents/ManageProductDetailsPageComponent';
+import { getToken } from '../utils/utils';
 
 export const GetCartItems = async () => {
   try {
@@ -255,6 +257,67 @@ export const ManageProductsPage = () => {
       <Header>
         <BreadCrumbs crumbs={breadcrumbs}></BreadCrumbs>
         <ManageProductsPageComponents></ManageProductsPageComponents>
+      </Header>
+    </div>
+  );
+};
+
+// admins
+export const ManageProductsDetailsPage = () => {
+  const { productId } = useParams(); // Extract productId from URL params
+  const [productInfo, setProductInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch product details from the API
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`http://localhost:5000/v1/admin/products/${productId}`, {
+          method: "GET",
+          headers: {
+            Authorization: getToken(),
+          },
+        });
+
+        const data = await response.json();
+        console.log("data is ", data.product)
+        if (data.success) {
+          setProductInfo(data.product);
+        } else {
+          setError("Failed to fetch product details");
+        }
+      } catch (error) {
+        console.error("Error fetching product details:", error);
+        setError("An error occurred while fetching product details.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProductDetails();
+  }, [productId]);
+
+  if (loading) {
+    return <div>Loading product details...</div>;
+  }
+
+  if (error || !productInfo) {
+    return <div>{error || "Product not found"}</div>;
+  }
+
+  const breadcrumbs = [
+    { label: "Admin", href: "/admin" },
+    { label: "Manage Products", href: "/admin/manage" },
+    { label: productInfo.name, href: `/admin/manage/${productId}` },
+  ];
+
+  return (
+    <div>
+      <Header>
+        <BreadCrumbs crumbs={breadcrumbs}></BreadCrumbs>
+        <ManageProductDetailsPageComponent productInfo={productInfo}></ManageProductDetailsPageComponent>
       </Header>
     </div>
   );

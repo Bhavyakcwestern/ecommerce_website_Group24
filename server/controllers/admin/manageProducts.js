@@ -63,11 +63,31 @@ const getAllProducts = async (req, res) => {
             query.name = { $regex: name, $options: "i" };
         }
 
-
+        const products = await Product.find(query);
         res.status(200).json({
             message: "Products fetched successfully",
             success: true,
             products,
+        });
+    } catch (err) {
+        console.error('Error fetching products:', err);
+        res.status(500).json({ message: "Internal server error", success: false });
+    }
+};
+
+const getProductById = async (req, res) => {
+    try {
+        const { productId } = req.params; // Get the search query parameter 'name'
+
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).json({ message: "Product not found", success: false });
+        }
+
+        res.status(200).json({
+            message: "Product fetched successfully",
+            success: true,
+            product,
         });
     } catch (err) {
         console.error('Error fetching products:', err);
@@ -113,5 +133,6 @@ module.exports = {
     manageProduct,
     deleteProduct,
     getAllProducts,
+    getProductById,
     createProduct,
 };

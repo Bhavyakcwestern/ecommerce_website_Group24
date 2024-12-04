@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import { Home, AccessoriesPage, Cart, ProductDetailsPage, AdminPage, ManageProductsPage, ProductsPage } from "./components/Main";
+import { Home, AccessoriesPage, Cart, ProductDetailsPage, AdminPage, ManageProductsPage, ProductsPage, ManageProductsDetailsPage } from "./components/Main";
 import { SignIn } from "./components/SignIn";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
@@ -91,10 +91,18 @@ export default function App() {
             }
           />
           <Route
-            path="/admin/manage-products"
+            path="/admin/manage"
             element={
               <ProtectedRoute requiredUserType="0">
                 <ManageProductsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/manage/:productId"
+            element={
+              <ProtectedRoute requiredUserType="0">
+                <ManageProductsDetailsPage />
               </ProtectedRoute>
             }
           />

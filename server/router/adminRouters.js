@@ -5,6 +5,7 @@ const adminController = require("../controllers/admin/manageProducts"); // Impor
 const middleware = require("../middlewares/middleware"); 
 
 router.put("/products/:productId", middleware.jwtValidator, middleware.checkIfAdmin, adminController.manageProduct);
+router.get("/products/:productId", middleware.jwtValidator, middleware.checkIfAdmin, adminController.getProductById);
 
 router.delete("/products/:productId", middleware.jwtValidator, middleware.checkIfAdmin, adminController.deleteProduct);
 
