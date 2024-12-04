@@ -10,6 +10,7 @@ const modifyCart = async (req, res) => {
     }
 
     try {
+        console.log("product id is ---->", product_id)
         const product = await Product.findById(product_id);
         if (!product) {
             return res.status(404).json({ error: "Product not found" });
@@ -66,10 +67,10 @@ const getCart = async (req, res) => {
         const cart = await Cart.findOne({ email, status: "active" }).populate("cart_items.product_id");
 
         if (!cart) {
-            return res.status(404).json({ error: "No active cart found for this user" });
+            return res.status(200).json({ total_items: 0, cart: {} });
         }
 
-        res.status(200).json(cart);
+        res.status(200).json({ total_items: cart.cart_items.length, cart });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Internal server error" });

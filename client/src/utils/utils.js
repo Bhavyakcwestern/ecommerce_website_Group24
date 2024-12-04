@@ -4,3 +4,7 @@ export const TruncateText = (text, maxLength) => {
     }
     return text;
   };
+
+export const getToken = () => {
+    return localStorage.getItem('token');
+}

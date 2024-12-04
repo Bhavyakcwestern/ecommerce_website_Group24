@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaBasketballBall } from "react-icons/fa";
 
-export const ProductPage = ({ productInfo }) => {
+export const ProductDetailsPageComponent = ({ productInfo }) => {
     if (!productInfo) {
         return <p>Loading...</p>;
     }

@@ -21,26 +21,32 @@ export const SignIn = () => {
         }
 
         // Sign Up API call
-        const response = await axios.post("http://localhost:5000/api/auth/signup", {
-          name: role === "admin" ? "Admin" : "User",
+        const response = await axios.post("http://localhost:5000/v1/auth/signup", {
+          email,
+          password,
+          userType: role === "admin" ? 0 : 1, // UserType: 0 = Admin, 1 = User
+        });
+
+        const { message, success, user } = response.data;
+        if (success) {
+          alert(message);
+          setIsSignUp(false); // Switch to Sign In mode
+        }
+      } else {
+        // Login API call
+        const response = await axios.post("http://localhost:5000/v1/auth/login", {
           email,
           password,
         });
 
-        alert("Sign-up successful! Please log in.");
-        setIsSignUp(false); // Switch to Sign In mode
-      } else {
-        // Login API call
-        const response = await axios.post("http://localhost:5000/api/auth/login", {
-          email,
-          password,
-        });
-        console.log("jwt token is ", response)
-        // Store JWT and navigate based on role
-        localStorage.setItem("token", response.data.jwtToken);
-        localStorage.setItem("usertype", role)
-        alert("Login successful!");
-        navigate(role === "admin" ? "/admin" : "/home");
+        const { message, success, token, user } = response.data;
+        if (success) {
+          localStorage.setItem("token", token); // Store JWT token
+          localStorage.setItem("usertype", user.userType); // Store user type
+          // alert(message);
+          console.log("navigating to ", user.userType)
+          navigate(user.userType === 0 ? "/admin" : "/home");
+        }
       }
     } catch (error) {
       setErrorMessage(error.response?.data?.message || "An error occurred.");
@@ -132,7 +138,7 @@ export const SignIn = () => {
                 className="text-blue-500 cursor-pointer hover:underline"
                 onClick={() => setIsSignUp(true)}
               >
-                Don't have an account? Sign Up
+                Don&apos;t have an account? Sign Up
               </span>
             )}
           </p>

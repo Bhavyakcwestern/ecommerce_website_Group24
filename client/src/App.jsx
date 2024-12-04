@@ -1,29 +1,27 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import {
-  Home,
-  AccessoriesPage,
-  Cart,
-  productsPage,
-  ProductDetailsPage,
-  AdminPage,
-  ManageProductsPage,
-} from "./components/Main";
+// eslint-disable-next-line no-unused-vars
+import { Home, AccessoriesPage, Cart, ProductDetailsPage, AdminPage, ManageProductsPage, ProductsPage } from "./components/Main";
 import { SignIn } from "./components/SignIn";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+
+
+import React from "react";
 
 // Utility function to check authentication and user type
-const isAuthenticated = () => localStorage.getItem("token");
+const isAuthenticated = () => !!localStorage.getItem("token");
 const getUserType = () => localStorage.getItem("usertype");
 
-const ProtectedRoute = ({ children, userType }) => {
-  console.log("is authenticvated ", isAuthenticated(), getUserType())
+const ProtectedRoute = ({ children, requiredUserType }) => {
+  // Check if the user is authenticated
   if (!isAuthenticated()) {
-    return <Navigate to="/" />;
+    return <Navigate to="/" replace />;
   }
 
-  if (userType && getUserType() !== userType) {
-    console.log("user type is not equal ", isAuthenticated(), getUserType())
-    return <Navigate to="/" />;
+  // Check if the user has the correct type
+  if (
+    requiredUserType &&
+    String(getUserType()) !== String(requiredUserType) // Ensure string comparison
+  ) {
+    return <Navigate to="/" replace />;
   }
 
   return children;
@@ -45,7 +43,7 @@ export default function App() {
           <Route
             path="/home"
             element={
-              <ProtectedRoute userType="user">
+              <ProtectedRoute requiredUserType="1">
                 <Home />
               </ProtectedRoute>
             }
@@ -53,15 +51,15 @@ export default function App() {
           <Route
             path="/products"
             element={
-              <ProtectedRoute userType="user">
-                <productsPage />
+              <ProtectedRoute requiredUserType="1">
+                <ProductsPage />
               </ProtectedRoute>
             }
           />
           <Route
             path="/accessories"
             element={
-              <ProtectedRoute userType="user">
+              <ProtectedRoute requiredUserType="1">
                 <AccessoriesPage />
               </ProtectedRoute>
             }
@@ -69,15 +67,15 @@ export default function App() {
           <Route
             path="/cart"
             element={
-              <ProtectedRoute userType="user">
+              <ProtectedRoute requiredUserType="1">
                 <Cart />
               </ProtectedRoute>
             }
           />
           <Route
-            path="/product-page/:productId"
+            path="/products/:productId"
             element={
-              <ProtectedRoute userType="user">
+              <ProtectedRoute requiredUserType="1">
                 <ProductDetailsPage />
               </ProtectedRoute>
             }
@@ -87,7 +85,7 @@ export default function App() {
           <Route
             path="/admin"
             element={
-              <ProtectedRoute userType="admin">
+              <ProtectedRoute requiredUserType="0">
                 <AdminPage />
               </ProtectedRoute>
             }
@@ -95,7 +93,7 @@ export default function App() {
           <Route
             path="/admin/manage-products"
             element={
-              <ProtectedRoute userType="admin">
+              <ProtectedRoute requiredUserType="0">
                 <ManageProductsPage />
               </ProtectedRoute>
             }
