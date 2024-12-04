@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FaUserClock } from "react-icons/fa";
 import { Navigate, useNavigate } from "react-router-dom";
 
 export const Profile = () => {
@@ -48,6 +49,16 @@ export const Profile = () => {
             className="cursor-pointer text-slate-800 flex w-full text-sm items-center rounded-md p-3 transition-all hover:bg-slate-100 focus:bg-slate-100 active:bg-slate-100"
             onClick={() => console.log("Sign Out Clicked")} // Handle Sign Out logic here
           >
+            <FaUserClock></FaUserClock>
+
+            <a href="/orders" className="text-slate-800 font-medium ml-2">Completed Orders</a>
+            
+          </li>
+          <li
+            role="menuitem"
+            className="cursor-pointer text-slate-800 flex w-full text-sm items-center rounded-md p-3 transition-all hover:bg-slate-100 focus:bg-slate-100 active:bg-slate-100"
+            onClick={() => console.log("Sign Out Clicked")} // Handle Sign Out logic here
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
@@ -67,7 +78,9 @@ export const Profile = () => {
             </svg>
 
             <p onClick={handleSignOut} className="text-slate-800 font-medium ml-2">Sign Out</p>
+            
           </li>
+          
         </ul>
       )}
     </div>

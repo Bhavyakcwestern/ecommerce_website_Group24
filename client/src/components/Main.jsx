@@ -13,6 +13,7 @@ import { ManageProductsPageComponents } from './AdminComponents/ManageProductsPa
 import { SearchOptions } from './SearchOptions';
 import { ManageProductDetailsPageComponent } from './AdminComponents/ManageProductDetailsPageComponent';
 import { getToken } from '../utils/utils';
+import { CompletedOrdersPageComponent } from './UsersComponents/CompletedOrdersPageComponent';
 
 export const GetCartItems = async () => {
   try {
@@ -200,6 +201,22 @@ export const Home = () => {
       <Header viewSearchOptions={false}>
         <BreadCrumbs crumbs={breadcrumbs}></BreadCrumbs>
         <HomePageComponent></HomePageComponent >
+      </Header>
+    </div>
+  );
+};
+
+export const CompletedOrdersPage = () => {
+
+  const breadcrumbs = [
+    { label: "Home", href: "/home"},
+    { label: "Orders", href: "/orders"},
+  ]
+  return (
+    <div>
+      <Header viewSearchOptions={false}>
+        <BreadCrumbs crumbs={breadcrumbs}></BreadCrumbs>
+        <CompletedOrdersPageComponent></CompletedOrdersPageComponent >
       </Header>
     </div>
   );

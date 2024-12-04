@@ -1,5 +1,5 @@
 export const TruncateText = (text, maxLength) => {
-    if (text.length > maxLength) {
+    if (text != undefined && text.length > maxLength) {
       return text.substring(0, maxLength) + '..';
     }
     return text;
