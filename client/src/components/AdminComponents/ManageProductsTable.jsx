@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FaEdit, FaTrashAlt, FaSearch } from 'react-icons/fa';
 import { getToken } from '../../utils/utils';
+import { CreateProductForm } from './CreateProductForm';
 
 export const ManageProductsTable = () => {
     const [products, setProducts] = useState([]);
@@ -86,6 +87,7 @@ export const ManageProductsTable = () => {
                         className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
                     />
                 </div>
+                
             </div>
             {loading ? (
                 <div className="text-center py-4">Loading products...</div>

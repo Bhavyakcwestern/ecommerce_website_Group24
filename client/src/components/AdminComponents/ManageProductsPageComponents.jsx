@@ -1,7 +1,8 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
-import { FaFirstOrder, FaProductHunt, FaSignOutAlt, FaSlidersH } from 'react-icons/fa';
+import { FaFirstOrder, FaNewspaper, FaProductHunt, FaSignOutAlt, FaSlidersH } from 'react-icons/fa';
 import { ManageProductsTable } from './ManageProductsTable';
+import { CreateProductForm } from './CreateProductForm';
 // import { ManageProductsTable } from './ManageProductDetailsPageComponent';
 
 export const ManageProductsPageComponents = () => {
@@ -73,6 +74,14 @@ export const ManageProductsPageComponents = () => {
                             <FaProductHunt className="text-xl" />
                             {isNavbarOpen && <span className="ml-4">Manage Products</span>}
                         </div>
+                        <div
+                            role="button"
+                            className="flex justify-center items-center w-full p-3 rounded-lg hover:bg-gray-100"
+                            onClick={() => setActivePage("createNewProduct")}
+                        >
+                            <FaNewspaper className="text-xl" />
+                            {isNavbarOpen && <span className="ml-4">Create New Products</span>}
+                        </div>
                         {/* Log Out Button */}
                         <div
                             role="button"
@@ -89,6 +98,9 @@ export const ManageProductsPageComponents = () => {
             <div className="flex-grow p-6">
                 {activePage === "manageProducts" && (
                     <ManageProductsTable></ManageProductsTable>
+                )}
+                {activePage === "createNewProduct" && (
+                    <CreateProductForm></CreateProductForm>
                 )}
 
                 {activePage === "manageOrders" && (
