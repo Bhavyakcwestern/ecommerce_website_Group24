@@ -24,7 +24,7 @@ jobs:
         id: build-docker-image
         run: |
           ls -la
-          docker build . -f Dockerfile -t dubemezeagwu/deployment-service:${{ env.version }}
+          docker build . -f ./server/Dockerfile -t dubemezeagwu/ece9065-test:${{ env.version }}
       - name: Push the Docker image
         id: push-docker-image
-        run: docker push dubemezeagwu/ece9065-server-v01:${{ env.version }}
+        run: docker push dubemezeagwu/ece9065-test:${{ env.version }}
