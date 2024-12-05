@@ -3,14 +3,13 @@ FROM node:22 AS builder
 
 WORKDIR /app
 
+# Copy all the application source code
+COPY . .
 # Copy package.json and package-lock.json to install dependencies
 COPY package*.json ./
 
 # Install dependencies
 RUN npm install
-
-# Copy all the application source code
-COPY . .
 
 # Stage 2: Run
 FROM node:22-alpine
