@@ -1,29 +1,25 @@
-# Stage 1: Install dependencies
-FROM node:22 AS builder
+# Stage 1: Build
+FROM node:22 as builder
 
 WORKDIR /app
 
-# Copy all the application source code
-COPY . .
-# Copy package.json and package-lock.json to install dependencies
-COPY package*.json ./
+# Copy package.json and package-lock.json first (to leverage Docker cache)
+COPY server/package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Stage 2: Run
-FROM node:22-alpine
+# Copy the rest of the application
+COPY server/ ./
+
+# Stage 2: Final image
+FROM node:22-alpine as stage-1
 
 WORKDIR /app
 
-# Copy all files from the builder stage
-COPY --from=builder /app ./
+# Copy from builder stage
+COPY --from=builder /app /app
 
-# Install production dependencies only
-RUN npm install --production
-
-# Expose the port your application runs on (e.g., 5000)
-EXPOSE 5000
-
-# Command to start the server
-CMD ["node", "index.js"]
+# Expose port and start the application
+EXPOSE 3000
+CMD ["npm", "start"]
