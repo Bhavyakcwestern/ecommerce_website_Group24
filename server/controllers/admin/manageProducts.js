@@ -97,10 +97,10 @@ const getProductById = async (req, res) => {
 
 const createProduct = async (req, res) => {
     try {
-        const { name, type, price, spec, availableStocks, soldStocks, seller, rating, releaseDate } = req.body;
+        const { name, type, price, priceBeforeDiscount, spec, availableStocks, soldStocks, seller, rating, releaseDate } = req.body;
 
-        console.log(name, type, price, spec, availableStocks, soldStocks, seller, rating, releaseDate)
-        if (!name || !price || !spec || !availableStocks || !seller || rating === undefined || releaseDate === undefined) {
+        console.log(name, type, price, priceBeforeDiscount, spec, availableStocks, soldStocks, seller, rating, releaseDate)
+        if (!name || !price || !priceBeforeDiscount || !spec || !availableStocks || !seller || rating === undefined || releaseDate === undefined) {
             return res.status(400).json({ message: "All fields are required", success: false });
         }
 
@@ -108,6 +108,7 @@ const createProduct = async (req, res) => {
             name,
             type,
             price,
+            priceBeforeDiscount,
             spec,
             availableStocks,
             soldStocks: soldStocks || 0,
@@ -117,7 +118,7 @@ const createProduct = async (req, res) => {
         });
 
         const savedProduct = await newProduct.save();
-
+        console.log("savedProdcuts ", savedProduct)
         res.status(201).json({
             message: "Product created successfully",
             success: true,

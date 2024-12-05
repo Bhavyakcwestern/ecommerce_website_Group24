@@ -14,6 +14,8 @@ import { SearchOptions } from './SearchOptions';
 import { ManageProductDetailsPageComponent } from './AdminComponents/ManageProductDetailsPageComponent';
 import { getToken } from '../utils/utils';
 import { CompletedOrdersPageComponent } from './UsersComponents/CompletedOrdersPageComponent';
+import { CART_TOTAL } from "./Header"
+import { subscribeToCart } from './CartContext';
 
 export const GetCartItems = async () => {
   try {
@@ -64,11 +66,6 @@ export const AccessoriesPage = () => {
 
   // States for search, filters, and sort
   const [search, setSearch] = useState('');
-  const [filters, setFilters] = useState({
-    brand: '',
-    screenSize: '',
-    os: '',
-  });
   const [sort, setSort] = useState('');
   const [cartTotalItems, setCartTotalItems] = useState(0);
   const [url, setUrl] = useState("http://localhost:5000/v1/products?type=1");
@@ -78,10 +75,6 @@ export const AccessoriesPage = () => {
     let query = `?type=1`;
   
     if (search) query += `&search=${encodeURIComponent(search)}`;
-    if (filters.brand) query += `&brand=${encodeURIComponent(filters.brand)}`;
-    if (filters.screenSize)
-      query += `&screenSize=${encodeURIComponent(filters.screenSize)}`;
-    if (filters.os) query += `&os=${encodeURIComponent(filters.os)}`;
   
     if (sort) {
       // Decode the sort value to handle "&" properly
@@ -99,7 +92,7 @@ export const AccessoriesPage = () => {
 
     fetchCartItems();
     console.log("url is ", url);
-  }, [search, filters, sort]);
+  }, [search, sort]);
 
   return (
     <div>
@@ -107,8 +100,8 @@ export const AccessoriesPage = () => {
       <SearchOptions
           search={search}
           setSearch={setSearch}
-          filters={filters}
-          setFilters={setFilters}
+          filters={null}
+          setFilters={null}
           sort={sort}
           setSort={setSort}
         />
@@ -128,15 +121,14 @@ export const ProductsPage = () => {
 
   const authToken = localStorage.getItem('token');
 
-  // States for search, filters, and sort
+  // States for search, filters, sort, and cart total items
   const [search, setSearch] = useState('');
   const [filters, setFilters] = useState({
     brand: '',
-    screenSize: '',
     os: '',
   });
   const [sort, setSort] = useState('');
-
+  const [cartTotalItems, setCartTotalItems] = useState(0);
   const [url, setUrl] = useState("http://localhost:5000/v1/products?type=0");
 
   // Update the URL whenever search, filters, or sort changes
@@ -144,19 +136,29 @@ export const ProductsPage = () => {
     let query = `?type=0`;
 
     if (search) query += `&search=${encodeURIComponent(search)}`;
-    if (filters.brand) query += `&brand=${encodeURIComponent(filters.brand)}`;
-    if (filters.screenSize)
-      query += `&screenSize=${encodeURIComponent(filters.screenSize)}`;
+    if (filters.brand) query += `&brandname=${encodeURIComponent(filters.brand)}`;
     if (filters.os) query += `&os=${encodeURIComponent(filters.os)}`;
-    if (sort) query += `&sort=${encodeURIComponent(sort)}`;
+    if (sort) {
+      const decodedSort = decodeURIComponent(sort);
+      query += `&sortby=${decodedSort}`;
+    }
 
     setUrl(`http://localhost:5000/v1/products${query}`);
-  }, [search, filters, sort]);
 
+    const fetchCartItems = async () => {
+      const totalItems = await GetCartItems();
+      setCartTotalItems(totalItems);
+    };
+
+    fetchCartItems();
+  }, [search, filters, sort]);
+  subscribeToCart((newTotal) => {
+    setCartTotalItems(newTotal);
+  });
   return (
     <div>
-      <Header>
-      <SearchOptions
+      <Header cart_total_items={cartTotalItems}>
+        <SearchOptions
           search={search}
           setSearch={setSearch}
           filters={filters}
@@ -172,11 +174,12 @@ export const ProductsPage = () => {
   );
 };
 
+
 export const Cart = () => {
 
   const breadcrumbs = [
     { label: "Home", href: "/home"},
-    { label: "products", href: "/home"},
+    { label: "Products", href: "/products"},
     { label: "Cart", href: "/cart" },
 
   ]

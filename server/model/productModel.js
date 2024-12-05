@@ -30,6 +30,7 @@ const productSchema = new mongoose.Schema(
       enum: [0, 1], // 0 for laptop, 1 for accessory
     },
     price: { type: Number, required: true },
+    priceBeforeDiscount: { type: Number, required: true },
     spec: { 
       type: mongoose.Schema.Types.Mixed, 
       required: true,

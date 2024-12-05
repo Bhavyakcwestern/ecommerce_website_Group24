@@ -9,6 +9,7 @@ const listProducts = async (req, res) => {
     os, // Laptops only
     gpu, // Laptops only
     storage, // Laptops only
+    brandname,
     sortby, // e.g., price, releaseDate, rating
     order = "asc", // Default sort order
   } = req.query;
@@ -41,6 +42,10 @@ const listProducts = async (req, res) => {
 
     if (storage) {
       query["spec.storage"] = { $regex: storage, $options: "i" };
+    }
+
+    if (brandname) {
+      query["spec.brandname"] = { $regex: brandname, $options: "i" };
     }
 
     const sort = {};

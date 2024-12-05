@@ -37,31 +37,19 @@ export const SearchOptions = ({ search, setSearch, filters, setFilters, sort, se
             </div>
 
             {/* Filters */}
-            <div className="flex flex-wrap gap-4 md:w-2/3 lg:pl-10 md:pl-10 justify-between">
-              <div className="relative">
-                <select
-                  value={filters.brand}
-                  onChange={(e) => handleFilterChange('brand', e.target.value)}
-                  className="w-full px-4 py-2 text-black rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                >
-                  <option value="">Filter by Brand</option>
-                  <option value="hp">HP</option>
-                  <option value="dell">Dell</option>
-                  <option value="msi">MSI</option>
-                  <option value="asus">Asus</option>
-                </select>
-              </div>
-              <div className="relative">
-                <select
-                  value={filters.screenSize}
-                  onChange={(e) =>
-                    handleFilterChange('screenSize', e.target.value)
-                  }
-                  className="w-full px-4 py-2 text-black rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                >
-                  <option value="">Filter by Screen Size</option>
-                  <option value="less-than-15">Less than 15-inch</option>
-                  <option value="17-inch">17-inch</option>
+            {filters && (
+              <div className="flex flex-wrap gap-4 md:w-2/3 lg:pl-10 md:pl-10 justify-between">
+                <div className="relative">
+                  <select
+                    value={filters.brand}
+                    onChange={(e) => handleFilterChange('brand', e.target.value)}
+                    className="w-full px-4 py-2 text-black rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                  >
+                    <option value="">Filter by Brand</option>
+                  <option value="HP">HP</option>
+                  <option value="Asus">Asus</option>
+                  <option value="MSI">MSI</option>
+                  <option value="Apple">Apple</option>
                 </select>
               </div>
               <div className="relative">
@@ -71,14 +59,15 @@ export const SearchOptions = ({ search, setSearch, filters, setFilters, sort, se
                   className="w-full px-4 py-2 text-black rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 >
                   <option value="">Filter by OS</option>
-                  <option value="windows">Windows</option>
-                  <option value="mac">Mac OS</option>
+                  <option value="Windows">Windows</option>
+                  <option value="MacOS">Mac OS</option>
                 </select>
               </div>
             </div>
+            )}
 
             {/* Sort By */}
-            <div className="relative w-full md:w-1/4 mt-4 md:mt-0">
+            <div className="relative ml-5 w-full md:w-1/4 mt-4 md:mt-0">
               <select
                 value={sort}
                 onChange={handleSortChange}

@@ -27,7 +27,7 @@ export const SignIn = () => {
           userType: role === "admin" ? 0 : 1, // UserType: 0 = Admin, 1 = User
         });
 
-        const { message, success, user } = response.data;
+        const { message, success } = response.data;
         if (success) {
           alert(message);
           setIsSignUp(false); // Switch to Sign In mode
@@ -39,7 +39,7 @@ export const SignIn = () => {
           password,
         });
 
-        const { message, success, token, user } = response.data;
+        const { success, token, user } = response.data;
         if (success) {
           localStorage.setItem("token", token); // Store JWT token
           localStorage.setItem("usertype", user.userType); // Store user type
@@ -102,19 +102,21 @@ export const SignIn = () => {
             </div>
           )}
           {/* Role Selection */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
-              {isSignUp ? "Sign up as" : "Sign in as"}
-            </label>
-            <select
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-              className="mt-1 p-2 w-full border rounded-md bg-white"
-            >
-              <option value="user">Normal User</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
+          {isSignUp && (
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700">
+                {isSignUp ? "Sign up as" : "Sign in as"}
+              </label>
+              <select
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                className="mt-1 p-2 w-full border rounded-md bg-white"
+              >
+                <option value="user">Normal User</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+          )}
           {/* Error Message */}
           {errorMessage && <p className="text-red-500 text-sm mb-2">{errorMessage}</p>}
           {/* Submit Button */}
