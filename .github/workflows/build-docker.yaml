@@ -1,8 +1,9 @@
 name: Build Docker Image
 
-on: 
+on:
   push:
-    branches: '**'
+    tags:
+      - 'v*.*.*'
 
 jobs:
   build:
@@ -34,4 +35,3 @@ jobs:
       - name: Push the Docker image
         id: push-docker-image
         run: docker push dubemezeagwu/ece9065-test:${{ env.version }}
-
