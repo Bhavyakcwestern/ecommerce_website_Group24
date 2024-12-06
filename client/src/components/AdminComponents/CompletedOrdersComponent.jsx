@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getToken } from '../../utils/utils';
 import { SERVER_ENDPOINT } from '../../assets/endpoints';
 
-export const CompletedOrdersPageComponent = () => {
+export const CompletedOrdersComponent = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,9 +11,9 @@ export const CompletedOrdersPageComponent = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch(`${SERVER_ENDPOINT}/v1/user/cart/completed-orders`, {
+        const response = await fetch(`${SERVER_ENDPOINT}/v1/admin/completed-orders`, {
           method: 'GET',
-          headers: {
+          headers: {    
             'Authorization': getToken()
           }
         });

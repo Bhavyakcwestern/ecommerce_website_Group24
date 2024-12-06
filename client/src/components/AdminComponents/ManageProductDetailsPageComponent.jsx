@@ -3,7 +3,8 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
 import { FaBasketballBall } from "react-icons/fa";
-import { getToken } from '../../utils/utils';
+import { convertDateToRequiredFormat, getToken } from '../../utils/utils';
+import { SERVER_ENDPOINT } from '../../assets/endpoints';
 
 export const ManageProductDetailsPageComponent = ({ productInfo }) => {
   const [error, setError] = useState(null);
@@ -13,6 +14,7 @@ export const ManageProductDetailsPageComponent = ({ productInfo }) => {
     name: productInfo.name || "",
     type: productInfo.type || 0,
     price: productInfo.price || 0,
+    priceBeforeDiscount: productInfo.priceBeforeDiscount || 0,
     spec: {
       brandname: productInfo.spec.brandname || "",
       screensize: productInfo.spec.screensize || "",
@@ -26,7 +28,7 @@ export const ManageProductDetailsPageComponent = ({ productInfo }) => {
     soldStocks: productInfo.soldStocks || 0,
     seller: productInfo.seller || "",
     rating: productInfo.rating || 0,
-    releaseDate: productInfo.releaseDate || "",
+    releaseDate: convertDateToRequiredFormat(productInfo.releaseDate) || "",
   });
 
   const handleChange = (e) => {
@@ -51,7 +53,7 @@ export const ManageProductDetailsPageComponent = ({ productInfo }) => {
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      const response = await fetch(`http://localhost:5000/v1/admin/products/${productInfo._id}`, {
+      const response = await fetch(`${SERVER_ENDPOINT}/v1/admin/products/${productInfo._id}`, {
         method: "PUT",
         headers: {
           Authorization: getToken(),
@@ -175,7 +177,7 @@ export const ManageProductDetailsPageComponent = ({ productInfo }) => {
           <button
             type="button"
             onClick={handleSave}
-            className="mt-6 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-800"
+            className="mt-6 px-6 py-3 bg-yellow-400 text-white font-semibold rounded-lg hover:bg-yellow-500"
           >
             {isSaving ? "Saving..." : "Save Changes"}
           </button>

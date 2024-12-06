@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getToken } from '../../utils/utils';
+import { SERVER_ENDPOINT } from '../../assets/endpoints';
 
 export const CartPageComponent = () => {
     const [cartItems, setCartItems] = useState([]);
@@ -14,7 +15,7 @@ export const CartPageComponent = () => {
 
     const fetchCartItems = async () => {
         try {
-            const response = await fetch("http://localhost:5000/v1/user/cart", {
+            const response = await fetch(`${SERVER_ENDPOINT}/v1/user/cart`, {
                 headers: {
                     Authorization: "Bearer " + getToken(),
                 },
@@ -67,10 +68,10 @@ export const CartPageComponent = () => {
                 alert(`Cannot increase quantity. Only ${item.availableStocks} units are available.`);
                 return;
             }
-            if (newQuantity <= 0) {
-                alert("Quantity cannot be less than 1. Please remove the item instead.");
-                return;
-            }
+            // if (newQuantity <= 0) {
+            //     alert("Quantity cannot be less than 1. Please remove the item instead.");
+            //     return;
+            // }
 
             // Update state locally
             setCartItems((prevItems) =>
@@ -86,7 +87,7 @@ export const CartPageComponent = () => {
                 product_id,
                 quantity: quantityChange,
             });
-            const response = await fetch("http://localhost:5000/v1/user/cart", {
+            const response = await fetch(`${SERVER_ENDPOINT}/v1/user/cart`, {
                 method: "POST",
                 headers: {
                     Authorization: "Bearer " + getToken(),
@@ -110,7 +111,7 @@ export const CartPageComponent = () => {
     const handleCheckout = async () => {
         try {
             // Fetch the latest cart items to ensure stock availability
-            const responseCart = await fetch("http://localhost:5000/v1/user/cart", {
+            const responseCart = await fetch(`${SERVER_ENDPOINT}/v1/user/cart`, {
                 method: "GET",
                 headers: {
                     Authorization: getToken(),
@@ -137,7 +138,7 @@ export const CartPageComponent = () => {
     
             // Proceed with checkout if stock is valid
             const responseCheckout = await fetch(
-                "http://localhost:5000/v1/user/cart/checkout",
+                `${SERVER_ENDPOINT}/v1/user/cart/checkout`,
                 {
                     method: "POST",
                     headers: {
@@ -218,7 +219,7 @@ export const CartPageComponent = () => {
                                                 <button
                                                     onClick={() => updateQuantity(item.product_id._id, -1)}
                                                     className="px-2 py-1 bg-gray-200 rounded dark:bg-gray-700 hover:bg-gray-300"
-                                                    disabled={item.quantity <= 1}
+                                                    
                                                 >
                                                     -
                                                 </button>
@@ -280,7 +281,7 @@ export const CartPageComponent = () => {
                                 className={`px-6 py-3 rounded-md shadow-md ${
                                     isCheckoutDisabled
                                         ? "bg-gray-400 cursor-not-allowed text-gray-700"
-                                        : "bg-blue-500 hover:bg-blue-600 text-white"
+                                        : "bg-yellow-500 hover:bg-yellow-600 text-white"
                                 }`}
                             >
                                 {isCheckoutDisabled ? "Fix Issues to Checkout" : "Checkout"}

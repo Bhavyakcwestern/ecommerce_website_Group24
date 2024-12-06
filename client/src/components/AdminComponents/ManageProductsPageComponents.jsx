@@ -1,14 +1,21 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
-import { FaFirstOrder, FaNewspaper, FaProductHunt, FaSignOutAlt, FaSlidersH } from 'react-icons/fa';
+import {
+    FaFirstOrder,
+    FaNewspaper,
+    FaProductHunt,
+    FaSignOutAlt,
+    FaSlidersH,
+} from 'react-icons/fa';
 import { ManageProductsTable } from './ManageProductsTable';
 import { CreateProductForm } from './CreateProductForm';
-// import { ManageProductsTable } from './ManageProductDetailsPageComponent';
+import { decodeJWT, getToken } from '../../utils/utils';
+import { useNavigate } from 'react-router-dom';
+import { CompletedOrdersComponent } from './CompletedOrdersComponent';
 
 export const ManageProductsPageComponents = () => {
-    const username = "John Doe";
-    const email = "johnsea@gmail.com";
-    const imgUrl = "https://ui-avatars.com/api/?background=random&name=" + username;
+    const jwtPayload = decodeJWT(getToken());
+    const username = jwtPayload.email;
+    const imgUrl = `https://ui-avatars.com/api/?background=random&name=${username}`;
 
     const [isNavbarOpen, setIsNavBarOpen] = useState(false);
     const [activePage, setActivePage] = useState(null);
@@ -16,19 +23,27 @@ export const ManageProductsPageComponents = () => {
     const toggleNavBarOpen = () => {
         setIsNavBarOpen(!isNavbarOpen);
     };
+    const navigate = useNavigate();
+    const handleSignOut = () => {
+        localStorage.clear();
+        navigate('/');
+    };
 
-   
     return (
-        <div className="flex h-[calc(100vh-2rem)]">
+        <div className="flex flex-col md:flex-row h-[calc(100vh-2rem)] overflow-hidden">
             {/* Sidebar */}
             <div
                 className={`transform transition-transform duration-500 ease-in-out ${
-                    isNavbarOpen ? "translate-x-0 w-64" : "w-20"
-                }`}
+                    isNavbarOpen ? 'translate-x-0 w-64' : 'w-20'
+                } bg-white md:static fixed z-50 h-full md:h-auto`}
             >
                 <div className="relative flex flex-col h-full bg-white shadow-xl">
                     {/* Navbar Header */}
-                    <div className={`flex items-center p-4 ${isNavbarOpen ? "justify-between" : "justify-center"}`}>
+                    <div
+                        className={`flex items-center p-4 ${
+                            isNavbarOpen ? 'justify-between' : 'justify-center'
+                        }`}
+                    >
                         {isNavbarOpen && (
                             <h5 className="font-semibold text-xl transition-opacity duration-300 opacity-100">
                                 Admin Panel
@@ -43,15 +58,18 @@ export const ManageProductsPageComponents = () => {
                     <div
                         className={`flex flex-col items-center rounded-xl ${
                             isNavbarOpen
-                                ? "gap-3 p-3 m-4 -mt-1 bg-gray-800 text-white"
-                                : "gap-0 w-10 h-10 ml-5 justify-center"
+                                ? 'gap-3 p-3 m-4 -mt-1 bg-gray-800 text-white'
+                                : 'gap-0 w-10 h-10 ml-5 justify-center'
                         }`}
                     >
-                        <img className="w-12 h-12 rounded-full" src={imgUrl} alt="User" />
+                        <img
+                            className="w-12 h-12 rounded-full"
+                            src={imgUrl}
+                            alt="User"
+                        />
                         {isNavbarOpen && (
                             <div className="text-center">
                                 <h4 className="font-semibold">{username}</h4>
-                                <p className="text-xs">{email}</p>
                             </div>
                         )}
                     </div>
@@ -61,31 +79,40 @@ export const ManageProductsPageComponents = () => {
                         <div
                             role="button"
                             className="flex justify-center items-center w-full p-3 rounded-lg hover:bg-gray-100"
-                            onClick={() => setActivePage("manageOrders")}
+                            onClick={() => setActivePage('manageOrders')}
                         >
                             <FaFirstOrder className="text-xl" />
-                            {isNavbarOpen && <span className="ml-4">Manage Orders</span>}
+                            {isNavbarOpen && (
+                                <span className="ml-4">Manage Orders</span>
+                            )}
                         </div>
                         <div
                             role="button"
                             className="flex justify-center items-center w-full p-3 rounded-lg hover:bg-gray-100"
-                            onClick={() => setActivePage("manageProducts")}
+                            onClick={() => setActivePage('manageProducts')}
                         >
                             <FaProductHunt className="text-xl" />
-                            {isNavbarOpen && <span className="ml-4">Manage Products</span>}
+                            {isNavbarOpen && (
+                                <span className="ml-4">Manage Products</span>
+                            )}
                         </div>
                         <div
                             role="button"
                             className="flex justify-center items-center w-full p-3 rounded-lg hover:bg-gray-100"
-                            onClick={() => setActivePage("createNewProduct")}
+                            onClick={() => setActivePage('createNewProduct')}
                         >
                             <FaNewspaper className="text-xl" />
-                            {isNavbarOpen && <span className="ml-4">Create New Products</span>}
+                            {isNavbarOpen && (
+                                <span className="ml-4">Create New Products</span>
+                            )}
                         </div>
                         {/* Log Out Button */}
                         <div
                             role="button"
                             className="flex justify-center items-center w-full p-3 rounded-lg hover:bg-gray-100"
+                            onClick={() => {
+                                handleSignOut();
+                            }}
                         >
                             <FaSignOutAlt className="text-xl" />
                             {isNavbarOpen && <span className="ml-4">Log Out</span>}
@@ -95,19 +122,15 @@ export const ManageProductsPageComponents = () => {
             </div>
 
             {/* Main Content */}
-            <div className="flex-grow p-6">
-                {activePage === "manageProducts" && (
+            <div className="flex-grow p-6 overflow-auto">
+                {activePage === 'manageProducts' && (
                     <ManageProductsTable></ManageProductsTable>
                 )}
-                {activePage === "createNewProduct" && (
+                {activePage === 'createNewProduct' && (
                     <CreateProductForm></CreateProductForm>
                 )}
-
-                {activePage === "manageOrders" && (
-                    <div>
-                        <h2 className="text-xl font-bold">Manage Orders</h2>
-                        <p>Order management content goes here.</p>
-                    </div>
+                {activePage === 'manageOrders' && (
+                    <CompletedOrdersComponent />
                 )}
             </div>
         </div>

@@ -1,5 +1,5 @@
-const Product = require("../../model/productModel"); // Import the product model
-
+const Product = require("../../model/productModel");
+const Cart = require("../../model/cartModel"); 
 // Controller to manage a product (update)
 const manageProduct = async (req, res) => {
     try {
@@ -130,10 +130,70 @@ const createProduct = async (req, res) => {
     }
 };
 
+const getCompletedOrders = async (req, res) => {
+
+    try {
+        const completedOrders = await Cart.find({
+            status: "completed",
+        });
+        console.log("completed orders ", completedOrders);
+
+        if (completedOrders.length === 0) {
+            return res.status(404).json({ message: "No completed orders found for this user." });
+        }
+
+        const ordersWithDetails = await Promise.all(
+            completedOrders.map(async (order) => {
+                const detailedItems = await Promise.all(
+                    order.cart_items.map(async (item) => {
+                        const product = await Product.findById(item.product_id);
+
+                        return {
+                            product_id: product?._id || item.product_id,
+                            name: product?.name || null,
+                            price: item.price,
+                            quantity: item.quantity,
+                            productDetails: product
+                                ? {
+                                      type: product.type,
+                                      spec: product.spec,
+                                      availableStocks: product.availableStocks,
+                                      soldStocks: product.soldStocks,
+                                      seller: product.seller,
+                                      rating: product.rating,
+                                      releaseDate: product.releaseDate,
+                                  }
+                                : `Product with ID ${item.product_id} not found.`,
+                        };
+                    })
+                );
+
+                return {
+                    id: order._id,
+                    email: order.email,
+                    status: order.status,
+                    createdAt: order.createdAt,
+                    updatedAt: order.updatedAt,
+                    cart_items: detailedItems,
+                };
+            })
+        );
+
+        res.status(200).json({
+            message: "Completed orders retrieved successfully.",
+            orders: ordersWithDetails,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
 module.exports = {
     manageProduct,
     deleteProduct,
     getAllProducts,
     getProductById,
     createProduct,
+    getCompletedOrders,
 };
