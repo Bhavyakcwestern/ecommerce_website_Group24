@@ -4,47 +4,6 @@ import { FaBasketballBall } from 'react-icons/fa';
 import { TruncateText } from '../../utils/utils';
 import { getToken } from '../../utils/utils';
 import { updateCartTotal } from '../CartContext';
-import { SERVER_ENDPOINT } from '../../assets/endpoints';
-
-
-const GetCartItems = async () => {
-  try {
-    // Get the authentication token from localStorage
-    const authToken = localStorage.getItem('token');
-
-    // Ensure the token exists before making the request
-    if (!authToken) {
-      console.error('User not authenticated. Token missing.');
-      return 0; // Return 0 items if not authenticated
-    }
-
-    // Fetch the cart data from the API
-    const response = await fetch(`${SERVER_ENDPOINT}/v1/user/cart`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `${authToken}`, // Include the token in the Authorization header
-      },
-    });
-
-    // Check if the response is successful
-    if (!response.ok) {
-      console.error('Failed to fetch cart items:', response.status, response.statusText);
-      return 0; // Return 0 items if the request fails
-    }
-
-    // Parse the JSON response
-    const data = await response.json();
-    console.log("cart items total = ", data)
-    // Return the total_items from the response
-    return data.cart.cart_items || null; // Default to 0 if total_items is missing
-  }
-  catch (error) {
-    console.error('Error fetching cart items:', error);
-    return 0; // Return 0 items if there's an error
-  }
-}
-
 
 export const ProductCardContainer = ({ url, authToken }) => {
   const [products, setProducts] = useState([]);
@@ -70,6 +29,7 @@ export const ProductCardContainer = ({ url, authToken }) => {
 
   console.log('auth token and url is ', authToken, url);
 
+  // Fetch products from the API
   useEffect(() => {
     fetch(url, {
       headers: {
@@ -78,45 +38,11 @@ export const ProductCardContainer = ({ url, authToken }) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        // Normalize product data
         const normalizedProducts = normalizeData(data);
-
-        // Fetch cart data
-        GetCartItems().then((cartData) => {
-          console.log("Total items in cart are: ", cartData);
-          if (!cartData) {
-            setProducts(normalizedProducts);
-            return;
-          }
-          // Loop through normalizedProducts and adjust availableStocks based on cartData
-          const updatedProducts = normalizedProducts.map((product) => {
-            // Find matching cart item for the current product
-            const cartItem = cartData.find((item) => item.product_id?._id === product.id);
-
-            // Log the product and cartItem to check their structure
-            console.log("Product: ", product);
-            console.log("Cart Item: ", cartItem);
-            if (cartItem) {
-              product.availableStocks = product.availableStocks - cartItem.quantity;
-            }
-
-            // If cartItem exists and its quantity is less than or equal to availableStocks
-            if (cartItem && cartItem.quantity >= product.availableStocks) {
-              console.log("Updating available stock for product:", product.id);
-              return { ...product, availableStocks: 0 };
-            }
-
-            return product; // Return product as is if no change is needed
-          });
-
-          // Set the updated products to state
-          setProducts(updatedProducts);
-        });
+        setProducts(normalizedProducts);
       })
       .catch((err) => console.error('Error fetching products:', err));
   }, [url, authToken]);
-
-
 
   const handleAddToCart = async (product_id, quantityChange) => {
     console.log('Adding to cart ', product_id, quantityChange);
@@ -126,7 +52,7 @@ export const ProductCardContainer = ({ url, authToken }) => {
         quantity: quantityChange,
       });
       console.log('Payload is ', payload);
-      const response = await fetch(`${SERVER_ENDPOINT}/v1/user/cart`, {
+      const response = await fetch('http://localhost:5000/v1/user/cart', {
         method: 'POST',
         headers: {
           Authorization: getToken(),
@@ -166,46 +92,31 @@ export const ProductCardContainer = ({ url, authToken }) => {
               </span>
             </div>
             <div className="mt-4 px-5 pb-5 flex flex-col">
-              <a href={`/products/${product.id}`} className="flex justify-between">
+              <div className="flex justify-between">
                 <h5 className="text-xl tracking-tight text-slate-900">
                   {product.name}
                 </h5>
 
-              </a>
+              </div>
               <p className="text-sm text-gray-600">{product.spec.brandname}</p>
-              <a href={`/products/${product.id}`} className="-ml-1 mt-2 mb-1 flex items-center">
-                {[...Array(5)].map((_, starIdx) => {
-                  const rating = product.rating; // Assuming product.rating is between 0 and 5
-                  const isFullStar = starIdx < Math.floor(rating);
-                  const isHalfStar = starIdx === Math.floor(rating) && rating % 1 !== 0;
-
-                  return (
-                    <svg
-                      key={starIdx}
-                      aria-hidden="true"
-                      className={`h-5 w-5 ${isFullStar ? "text-yellow-300" : isHalfStar ? "text-yellow-200" : "text-gray-300"
-                        }`}
-                      fill={isFullStar || isHalfStar ? "currentColor" : "none"}
-                      stroke={!isFullStar && !isHalfStar ? "currentColor" : "none"}
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                      {isHalfStar && (
-                        <path
-                          d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                          className="text-yellow-300"
-                        ></path>
-                      )}
-                    </svg>
-                  );
-                })}
+              <div className="-ml-1 mt-2 mb-1 flex items-center">
+                {[...Array(5)].map((_, starIdx) => (
+                  <svg
+                    key={starIdx}
+                    aria-hidden="true"
+                    className="h-5 w-5 text-yellow-300"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                  </svg>
+                ))}
                 <span className="mr-2 ml-3 rounded bg-yellow-200 px-2.5 py-0.5 text-xs font-semibold">
-                  {product.rating.toFixed(1)}
+                  {product.rating}
                 </span>
-              </a>
-
-              <a href={`/products/${product.id}`} className="mt-2 mb-5 flex items-center justify-between">
+              </div>
+              <div className="mt-2 mb-5 flex items-center justify-between">
                 <p>
                   <span className="text-3xl font-bold text-slate-900">
                     ${product.price}
@@ -216,10 +127,10 @@ export const ProductCardContainer = ({ url, authToken }) => {
                     </span>
                   )}
                 </p>
-              </a>
+              </div>
 
               {/* Product Details */}
-              <a href={`/products/${product.id}`} className="mt-0 text-sm text-gray-700 grid grid-cols-1 gap-2">
+              <div className="mt-0 text-sm text-gray-700 grid grid-cols-1 gap-2">
                 {product.type === 0 ? (
                   // Specs for laptops
                   <>
@@ -260,7 +171,7 @@ export const ProductCardContainer = ({ url, authToken }) => {
                   <strong>Available Stock:</strong>{' '}
                   {TruncateText(product.availableStocks.toString(), 18)}
                 </p>
-              </a>
+              </div>
 
               {product.availableStocks > 0 ? (
                 <button

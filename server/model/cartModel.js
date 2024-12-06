@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 
 const cartItemSchema = new mongoose.Schema({
     product_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Product",
+        type: mongoose.Schema.Types.ObjectId, // Reference to the Product model
+        ref: "Product", // You can specify the model name if you use populate() to get product details
         required: true
     },
     price: {

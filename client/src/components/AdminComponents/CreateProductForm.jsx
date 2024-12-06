@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { SERVER_ENDPOINT } from '../../assets/endpoints';
 
 export const CreateProductForm = ({ onClose }) => {
     const [productType, setProductType] = useState("0"); // Default to 'Laptop'
     const [productData, setProductData] = useState({
         name: '',
         price: 0,
-        priceBeforeDiscount: 0,
         availableStocks: 0,
         soldStocks: 0,
         seller: '',
@@ -50,7 +48,7 @@ export const CreateProductForm = ({ onClose }) => {
         const newProduct = { ...productData, type: parseInt(productType) };
         console.log("product to create: ", newProduct)
         try {
-            const response = await fetch(`${SERVER_ENDPOINT}/v1/admin/products/`, {
+            const response = await fetch('http://localhost:5000/v1/admin/products/', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -62,6 +60,7 @@ export const CreateProductForm = ({ onClose }) => {
             const result = await response.json();
             if (result.success) {
                 alert('Product created successfully');
+                onClose(); // Close the form after success
             } else {
                 alert('Error creating product: ' + result.message);
             }
@@ -72,7 +71,7 @@ export const CreateProductForm = ({ onClose }) => {
 
     return (
         <div className="modal">
-            <form onSubmit={handleSubmit} className="p-6 ">
+            <form onSubmit={handleSubmit} className="p-6 space-y-4">
                 <h2 className="text-2xl font-bold">Create Product</h2>
 
                 <div>
@@ -109,18 +108,6 @@ export const CreateProductForm = ({ onClose }) => {
                         id="price"
                         name="price"
                         value={productData.price}
-                        onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded-md"
-                        required
-                    />
-                </div>
-                <div>
-                    <label htmlFor="priceBeforeDiscount" className="block">Price Before Discount</label>
-                    <input
-                        type="number"
-                        id="priceBeforeDiscount"
-                        name="priceBeforeDiscount"
-                        value={productData.priceBeforeDiscount}
                         onChange={handleChange}
                         className="w-full p-2 border border-gray-300 rounded-md"
                         required
@@ -308,7 +295,7 @@ export const CreateProductForm = ({ onClose }) => {
                 )}
 
                 <div className="flex justify-end">
-                    <button type="submit" className="bg-yellow-500 text-white p-2 rounded-md">Save</button>
+                    <button type="submit" className="bg-blue-500 text-white p-2 rounded-md">Save</button>
                 </div>
             </form>
         </div>

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { FaEdit, FaTrashAlt, FaSearch } from 'react-icons/fa';
 import { getToken } from '../../utils/utils';
 import { CreateProductForm } from './CreateProductForm';
-import { SERVER_ENDPOINT } from '../../assets/endpoints';
 
 export const ManageProductsTable = () => {
     const [products, setProducts] = useState([]);
@@ -13,7 +12,7 @@ export const ManageProductsTable = () => {
     const fetchProducts = async (query = "") => {
         setLoading(true);
         try {
-            const response = await fetch(`${SERVER_ENDPOINT}/v1/admin/products?name=${query}`, {
+            const response = await fetch(`http://localhost:5000/v1/admin/products?name=${query}`, {
                 method: 'GET',
                 headers: {
                     Authorization: getToken(),
@@ -54,7 +53,7 @@ export const ManageProductsTable = () => {
         console.log("id is ", productId)
         setLoading(true);
         try {
-            const response = await fetch(`${SERVER_ENDPOINT}/v1/admin/products/${productId}`, {
+            const response = await fetch(`http://localhost:5000/v1/admin/products/${productId}`, {
                 method: 'DELETE',
                 headers: {
                     Authorization: getToken(),
