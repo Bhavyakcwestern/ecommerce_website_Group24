@@ -5,14 +5,14 @@ WORKDIR /app
 
 # Copy package files and install dependencies
 COPY package*.json ./
-RUN npm ci
+RUN npm install
 
 # Copy application files
 COPY . .
 
 # Navigate to the client directory for the build
 WORKDIR /app/client
-RUN npm install
+
 
 EXPOSE 5173
 
