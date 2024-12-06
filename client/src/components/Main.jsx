@@ -12,11 +12,10 @@ import { AdminPageComponent } from './AdminComponents/AdminPageComponent';
 import { ManageProductsPageComponents } from './AdminComponents/ManageProductsPageComponents';
 import { SearchOptions } from './SearchOptions';
 import { ManageProductDetailsPageComponent } from './AdminComponents/ManageProductDetailsPageComponent';
-import { decodeJWT, getToken } from '../utils/utils';
+import { getToken } from '../utils/utils';
 import { CompletedOrdersPageComponent } from './UsersComponents/CompletedOrdersPageComponent';
 import { CART_TOTAL } from "./Header"
 import { subscribeToCart } from './CartContext';
-import { SERVER_ENDPOINT } from '../assets/endpoints';
 
 export const GetCartItems = async () => {
   try {
@@ -30,7 +29,7 @@ export const GetCartItems = async () => {
     }
     
     // Fetch the cart data from the API
-    const response = await fetch(`${SERVER_ENDPOINT}/v1/user/cart`, {
+    const response = await fetch('http://localhost:5000/v1/user/cart', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -69,7 +68,7 @@ export const AccessoriesPage = () => {
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState('');
   const [cartTotalItems, setCartTotalItems] = useState(0);
-  const [url, setUrl] = useState(`${SERVER_ENDPOINT}/v1/products?type=1`);
+  const [url, setUrl] = useState("http://localhost:5000/v1/products?type=1");
   
   // Update the URL whenever search, filters, or sort changes
   useEffect(() => {
@@ -85,7 +84,7 @@ export const AccessoriesPage = () => {
     }
   
     console.log("sort is ", sort);
-    setUrl(`${SERVER_ENDPOINT}/v1/products${query}`);
+    setUrl(`http://localhost:5000/v1/products${query}`);
     const fetchCartItems = async () => {
       const totalItems = await GetCartItems();
       setCartTotalItems(totalItems);
@@ -117,7 +116,7 @@ export const AccessoriesPage = () => {
 export const ProductsPage = () => {
   const breadcrumbs = [
     { label: "Home", href: "/home" },
-    { label: "Laptops", href: "/products" },
+    { label: "Products", href: "/products" },
   ];
 
   const authToken = localStorage.getItem('token');
@@ -130,7 +129,7 @@ export const ProductsPage = () => {
   });
   const [sort, setSort] = useState('');
   const [cartTotalItems, setCartTotalItems] = useState(0);
-  const [url, setUrl] = useState(`${SERVER_ENDPOINT}/v1/products?type=0`);
+  const [url, setUrl] = useState("http://localhost:5000/v1/products?type=0");
 
   // Update the URL whenever search, filters, or sort changes
   useEffect(() => {
@@ -144,7 +143,7 @@ export const ProductsPage = () => {
       query += `&sortby=${decodedSort}`;
     }
 
-    setUrl(`${SERVER_ENDPOINT}/v1/products${query}`);
+    setUrl(`http://localhost:5000/v1/products${query}`);
 
     const fetchCartItems = async () => {
       const totalItems = await GetCartItems();
@@ -180,7 +179,7 @@ export const Cart = () => {
 
   const breadcrumbs = [
     { label: "Home", href: "/home"},
-    { label: "Laptops", href: "/products"},
+    { label: "Products", href: "/products"},
     { label: "Cart", href: "/cart" },
 
   ]
@@ -226,82 +225,28 @@ export const CompletedOrdersPage = () => {
   );
 };
 
-
 export const ProductDetailsPage = () => {
   const { productId } = useParams();
-  const [productInfo, setProductInfo] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [cartTotalItems, setCartTotalItems] = useState(0);
-  useEffect(() => {
-    // Fetch product details from the API
-    const fetchProductInfo = async () => {
-      try {
-        const response = await fetch(`${SERVER_ENDPOINT}/v1/products/${productId}`, {
-          headers: {
-            Authorization: getToken(),
-          },
-        });
-        
-        if (!response.ok) {
-          throw new Error('Product not found');
-        }
-
-        const data = await response.json();
-        setProductInfo(data);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProductInfo();
-    const fetchCartItems = async () => {
-      const totalItems = await GetCartItems();
-      setCartTotalItems(totalItems);
-    };
-
-    fetchCartItems();
-  }, [productId]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
-
+  const productInfo = products.find((product) => product.id === parseInt(productId))
   if (!productInfo) {
-    return <div>Product not found</div>;
+    return <div>Product not found</div>
   }
-  let breadcrumbs = [];
-  if (productInfo.type == 1) {
-    console.log("prodct info is ", productInfo)
-    breadcrumbs = [
-      { label: "Home", href: "/home" },
-      { label: "Accessories", href: "/accessories"},
-      { label: productInfo.product.name, href: `/products/${productInfo.product.id}` },
-    ];
-  } else {
-    breadcrumbs = [
-      { label: "Home", href: "/home" },
-      { label: "Laptops", href: "/products"},
-      { label: productInfo.product.name, href: `/products/${productInfo.product.id}` },
-    ];
-  }
-  
+  console.log("product_info ", productInfo)
+  const breadcrumbs = [
+    { label: "Home", href: "/home"},
+    // todo: change label based on product type - products : accessories
+    { label: "products", href: "/products"},
+    { label: productInfo.name, href: "/products/" + productInfo.id}
+  ]
   return (
     <div>
-      <Header cart_total_items={cartTotalItems} viewSearchOptions={false}>
-        <BreadCrumbs crumbs={breadcrumbs} />
-        <ProductDetailsPageComponent productInfo={productInfo.product} type={productInfo.type} />
+      <Header viewSearchOptions={false}>
+        <BreadCrumbs crumbs={breadcrumbs}></BreadCrumbs>
+        <ProductDetailsPageComponent productInfo={productInfo}></ProductDetailsPageComponent>
       </Header>
     </div>
   );
 };
-
 
 
 // admins
@@ -327,8 +272,6 @@ export const ManageProductsPage = () => {
     { label: "Admin", href: "/admin"},
     { label: "Manage Products", href: "/manage-products"},
   ]
-  const jwtPayload = decodeJWT(getToken());
-  console.log("payload is ", jwtPayload)
   return (
     <div>
       <Header>
@@ -351,7 +294,7 @@ export const ManageProductsDetailsPage = () => {
     const fetchProductDetails = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`${SERVER_ENDPOINT}/v1/admin/products/${productId}`, {
+        const response = await fetch(`http://localhost:5000/v1/admin/products/${productId}`, {
           method: "GET",
           headers: {
             Authorization: getToken(),

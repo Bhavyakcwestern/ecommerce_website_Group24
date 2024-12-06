@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { getToken } from '../../utils/utils';
-import { SERVER_ENDPOINT } from '../../assets/endpoints';
 
 export const CompletedOrdersPageComponent = () => {
   const [orders, setOrders] = useState([]);
@@ -11,10 +10,10 @@ export const CompletedOrdersPageComponent = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch(`${SERVER_ENDPOINT}/v1/user/cart/completed-orders`, {
+        const response = await fetch('http://localhost:5000/v1/user/cart/completed-orders', {
           method: 'GET',
           headers: {
-            'Authorization': getToken()
+            'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImE0QGdtYWlsLmNvbSIsIl9pZCI6IjY3NGNkNDE0OGYwNDI2NDRlNDNjYWJkYiIsInVzZXJUeXBlIjoxLCJpYXQiOjE3MzMzNTExMDYsImV4cCI6MTczMzQzNzUwNn0.Yp65-CXqD103_tQEuF0JGNrbKSt8kctw7sZY171cm80'
           }
         });
 
