@@ -116,7 +116,7 @@ export const AccessoriesPage = () => {
 export const ProductsPage = () => {
   const breadcrumbs = [
     { label: "Home", href: "/home" },
-    { label: "Products", href: "/products" },
+    { label: "Laptops", href: "/products" },
   ];
 
   const authToken = localStorage.getItem('token');
@@ -179,7 +179,7 @@ export const Cart = () => {
 
   const breadcrumbs = [
     { label: "Home", href: "/home"},
-    { label: "Products", href: "/products"},
+    { label: "Laptops", href: "/products"},
     { label: "Cart", href: "/cart" },
 
   ]
@@ -225,28 +225,82 @@ export const CompletedOrdersPage = () => {
   );
 };
 
+
 export const ProductDetailsPage = () => {
   const { productId } = useParams();
-  const productInfo = products.find((product) => product.id === parseInt(productId))
-  if (!productInfo) {
-    return <div>Product not found</div>
+  const [productInfo, setProductInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [cartTotalItems, setCartTotalItems] = useState(0);
+  useEffect(() => {
+    // Fetch product details from the API
+    const fetchProductInfo = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/v1/products/${productId}`, {
+          headers: {
+            Authorization: getToken(),
+          },
+        });
+        
+        if (!response.ok) {
+          throw new Error('Product not found');
+        }
+
+        const data = await response.json();
+        setProductInfo(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProductInfo();
+    const fetchCartItems = async () => {
+      const totalItems = await GetCartItems();
+      setCartTotalItems(totalItems);
+    };
+
+    fetchCartItems();
+  }, [productId]);
+
+  if (loading) {
+    return <div>Loading...</div>;
   }
-  console.log("product_info ", productInfo)
-  const breadcrumbs = [
-    { label: "Home", href: "/home"},
-    // todo: change label based on product type - products : accessories
-    { label: "products", href: "/products"},
-    { label: productInfo.name, href: "/products/" + productInfo.id}
-  ]
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  if (!productInfo) {
+    return <div>Product not found</div>;
+  }
+  let breadcrumbs = [];
+  if (productInfo.type == 1) {
+    console.log("prodct info is ", productInfo)
+    breadcrumbs = [
+      { label: "Home", href: "/home" },
+      { label: "Accessories", href: "/accessories"},
+      { label: productInfo.product.name, href: `/products/${productInfo.product.id}` },
+    ];
+  } else {
+    breadcrumbs = [
+      { label: "Home", href: "/home" },
+      { label: "Laptops", href: "/products"},
+      { label: productInfo.product.name, href: `/products/${productInfo.product.id}` },
+    ];
+  }
+  
   return (
     <div>
-      <Header viewSearchOptions={false}>
-        <BreadCrumbs crumbs={breadcrumbs}></BreadCrumbs>
-        <ProductDetailsPageComponent productInfo={productInfo}></ProductDetailsPageComponent>
+      <Header cart_total_items={cartTotalItems} viewSearchOptions={false}>
+        <BreadCrumbs crumbs={breadcrumbs} />
+        <ProductDetailsPageComponent productInfo={productInfo.product} type={productInfo.type} />
       </Header>
     </div>
   );
 };
+
 
 
 // admins

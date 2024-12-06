@@ -13,7 +13,7 @@ export const CompletedOrdersPageComponent = () => {
         const response = await fetch('http://localhost:5000/v1/user/cart/completed-orders', {
           method: 'GET',
           headers: {
-            'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImE0QGdtYWlsLmNvbSIsIl9pZCI6IjY3NGNkNDE0OGYwNDI2NDRlNDNjYWJkYiIsInVzZXJUeXBlIjoxLCJpYXQiOjE3MzMzNTExMDYsImV4cCI6MTczMzQzNzUwNn0.Yp65-CXqD103_tQEuF0JGNrbKSt8kctw7sZY171cm80'
+            'Authorization': getToken()
           }
         });
 

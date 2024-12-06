@@ -5,6 +5,46 @@ import { TruncateText } from '../../utils/utils';
 import { getToken } from '../../utils/utils';
 import { updateCartTotal } from '../CartContext';
 
+
+const GetCartItems = async () => {
+  try {
+    // Get the authentication token from localStorage
+    const authToken = localStorage.getItem('token');
+    
+    // Ensure the token exists before making the request
+    if (!authToken) {
+      console.error('User not authenticated. Token missing.');
+      return 0; // Return 0 items if not authenticated
+    }
+    
+    // Fetch the cart data from the API
+    const response = await fetch('http://localhost:5000/v1/user/cart', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `${authToken}`, // Include the token in the Authorization header
+      },
+    });
+
+    // Check if the response is successful
+    if (!response.ok) {
+      console.error('Failed to fetch cart items:', response.status, response.statusText);
+      return 0; // Return 0 items if the request fails
+    }
+
+    // Parse the JSON response
+    const data = await response.json();
+    console.log("cart items total = ", data)
+    // Return the total_items from the response
+    return data.cart.cart_items || null; // Default to 0 if total_items is missing
+  }
+  catch (error) {
+    console.error('Error fetching cart items:', error);
+    return 0; // Return 0 items if there's an error
+  }
+}
+
+
 export const ProductCardContainer = ({ url, authToken }) => {
   const [products, setProducts] = useState([]);
   // const { cartTotal, setCartTotal } = useCart();
@@ -29,7 +69,6 @@ export const ProductCardContainer = ({ url, authToken }) => {
 
   console.log('auth token and url is ', authToken, url);
 
-  // Fetch products from the API
   useEffect(() => {
     fetch(url, {
       headers: {
@@ -38,11 +77,45 @@ export const ProductCardContainer = ({ url, authToken }) => {
     })
       .then((res) => res.json())
       .then((data) => {
+        // Normalize product data
         const normalizedProducts = normalizeData(data);
-        setProducts(normalizedProducts);
+  
+        // Fetch cart data
+        GetCartItems().then((cartData) => {
+          console.log("Total items in cart are: ", cartData);
+          if (!cartData) {
+            setProducts(normalizedProducts);
+            return;
+          }
+          // Loop through normalizedProducts and adjust availableStocks based on cartData
+          const updatedProducts = normalizedProducts.map((product) => {
+            // Find matching cart item for the current product
+            const cartItem = cartData.find((item) => item.product_id._id === product.id);
+  
+            // Log the product and cartItem to check their structure
+            console.log("Product: ", product);
+            console.log("Cart Item: ", cartItem);
+            if (cartItem) {
+              product.availableStocks = product.availableStocks - cartItem.quantity;
+            }
+            
+            // If cartItem exists and its quantity is less than or equal to availableStocks
+            if (cartItem && cartItem.quantity >= product.availableStocks) {
+              console.log("Updating available stock for product:", product.id);
+              return { ...product, availableStocks: 0 };
+            }
+  
+            return product; // Return product as is if no change is needed
+          });
+  
+          // Set the updated products to state
+          setProducts(updatedProducts);
+        });
       })
       .catch((err) => console.error('Error fetching products:', err));
   }, [url, authToken]);
+  
+  
 
   const handleAddToCart = async (product_id, quantityChange) => {
     console.log('Adding to cart ', product_id, quantityChange);
@@ -81,7 +154,7 @@ export const ProductCardContainer = ({ url, authToken }) => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {/* Map through products array to dynamically render cards */}
         {products.map((product) => (
-          <a
+          <a href={`/products/${product.id}`}
             key={product.id}
             className="relative m-auto flex w-full max-w-xs flex-col rounded-lg border border-gray-100 bg-white shadow-md"
           >

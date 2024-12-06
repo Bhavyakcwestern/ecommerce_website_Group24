@@ -67,10 +67,10 @@ export const CartPageComponent = () => {
                 alert(`Cannot increase quantity. Only ${item.availableStocks} units are available.`);
                 return;
             }
-            if (newQuantity <= 0) {
-                alert("Quantity cannot be less than 1. Please remove the item instead.");
-                return;
-            }
+            // if (newQuantity <= 0) {
+            //     alert("Quantity cannot be less than 1. Please remove the item instead.");
+            //     return;
+            // }
 
             // Update state locally
             setCartItems((prevItems) =>
@@ -218,7 +218,7 @@ export const CartPageComponent = () => {
                                                 <button
                                                     onClick={() => updateQuantity(item.product_id._id, -1)}
                                                     className="px-2 py-1 bg-gray-200 rounded dark:bg-gray-700 hover:bg-gray-300"
-                                                    disabled={item.quantity <= 1}
+                                                    
                                                 >
                                                     -
                                                 </button>
