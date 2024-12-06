@@ -281,7 +281,7 @@ export const CartPageComponent = () => {
                                 className={`px-6 py-3 rounded-md shadow-md ${
                                     isCheckoutDisabled
                                         ? "bg-gray-400 cursor-not-allowed text-gray-700"
-                                        : "bg-blue-500 hover:bg-blue-600 text-white"
+                                        : "bg-yellow-500 hover:bg-yellow-600 text-white"
                                 }`}
                             >
                                 {isCheckoutDisabled ? "Fix Issues to Checkout" : "Checkout"}

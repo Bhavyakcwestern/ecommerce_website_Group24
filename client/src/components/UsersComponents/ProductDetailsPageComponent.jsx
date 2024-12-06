@@ -16,31 +16,36 @@ export const ProductDetailsPageComponent = ({ productInfo }) => {
 
     const handleAddToCart = async (product_id, quantityChange) => {
         console.log('Adding to cart ', product_id, quantityChange);
-        try {
-          const payload = JSON.stringify({
-            product_id,
-            quantity: quantityChange,
-          });
-          console.log('Payload is ', payload);
-          const response = await fetch(`${SERVER_ENDPOINT}/v1/user/cart`, {
-            method: 'POST',
-            headers: {
-              Authorization: getToken(),
-              'Content-Type': 'application/json',
-            },
-            body: payload,
-          });
-          const data = await response.json();
-          if (!response.ok) {
-            throw new Error(data.message || 'Failed to Add to Cart');
-          }
-          console.log('Product Added to Cart Successfully:', data);
-          // refresh the Header
-          window.location.reload();
-        } catch (error) {
-          console.error('Error adding to cart:', error);
+        if (productInfo.availableStocks <= 0) {
+            alert('No stocks available for this product.');
+            return; // Don't allow adding to cart if no stocks available
         }
-      };
+
+        try {
+            const payload = JSON.stringify({
+                product_id,
+                quantity: quantityChange,
+            });
+            console.log('Payload is ', payload);
+            const response = await fetch(`${SERVER_ENDPOINT}/v1/user/cart`, {
+                method: 'POST',
+                headers: {
+                    Authorization: getToken(),
+                    'Content-Type': 'application/json',
+                },
+                body: payload,
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to Add to Cart');
+            }
+            console.log('Product Added to Cart Successfully:', data);
+            // refresh the Header
+            window.location.reload();
+        } catch (error) {
+            console.error('Error adding to cart:', error);
+        }
+    };
     return (
         <div>
             <section className="py-8 px-6 sm:px-12 lg:px-20 bg-gray-50">
@@ -66,8 +71,8 @@ export const ProductDetailsPageComponent = ({ productInfo }) => {
                                     <svg
                                         key={idx}
                                         className={`h-5 w-5 ${idx < Math.round(productInfo.rating)
-                                                ? "text-yellow-400"
-                                                : "text-gray-300"
+                                            ? "text-yellow-400"
+                                            : "text-gray-300"
                                             }`}
                                         fill="currentColor"
                                         xmlns="http://www.w3.org/2000/svg"
@@ -151,13 +156,23 @@ export const ProductDetailsPageComponent = ({ productInfo }) => {
                             </div>
 
                             {/* Add to Cart Button */}
-                            <button
-                                onClick={() => handleAddToCart(productInfo._id, 1)}
-                                type="button"
-                                className="mt-6 px-6 py-2 w-full text-white bg-yellow-400 hover:bg-yellow-600 rounded-md font-semibold text-lg"
-                            >
-                                Add to Cart
-                            </button>
+                            {productInfo.availableStocks > 0 ? (
+                                <button
+                                    onClick={() => handleAddToCart(productInfo.id, 1)}
+                                    className="flex items-center gap-2 mt-1 justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                                >
+                                    <FaBasketballBall />
+                                    Add to cart
+                                </button>
+                            ) : (
+                                <button
+                                    disabled
+                                    aria-disabled="true"
+                                    className="flex items-center gap-2 mt-1 justify-center rounded-md bg-gray-400 px-5 py-2.5 text-center text-sm font-medium text-white cursor-not-allowed"
+                                >
+                                    Out of Stock
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>

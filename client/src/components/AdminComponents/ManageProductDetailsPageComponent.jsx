@@ -177,7 +177,7 @@ export const ManageProductDetailsPageComponent = ({ productInfo }) => {
           <button
             type="button"
             onClick={handleSave}
-            className="mt-6 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-800"
+            className="mt-6 px-6 py-3 bg-yellow-400 text-white font-semibold rounded-lg hover:bg-yellow-500"
           >
             {isSaving ? "Saving..." : "Save Changes"}
           </button>

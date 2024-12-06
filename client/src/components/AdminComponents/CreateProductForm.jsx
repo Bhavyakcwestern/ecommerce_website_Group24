@@ -308,7 +308,7 @@ export const CreateProductForm = ({ onClose }) => {
                 )}
 
                 <div className="flex justify-end">
-                    <button type="submit" className="bg-blue-500 text-white p-2 rounded-md">Save</button>
+                    <button type="submit" className="bg-yellow-500 text-white p-2 rounded-md">Save</button>
                 </div>
             </form>
         </div>
