@@ -154,7 +154,7 @@ export const ProductCardContainer = ({ url, authToken }) => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {/* Map through products array to dynamically render cards */}
         {products.map((product) => (
-          <a href={`/products/${product.id}`}
+          <a
             key={product.id}
             className="relative m-auto flex w-full max-w-xs flex-col rounded-lg border border-gray-100 bg-white shadow-md"
           >
@@ -203,7 +203,7 @@ export const ProductCardContainer = ({ url, authToken }) => {
               </div>
 
               {/* Product Details */}
-              <div className="mt-0 text-sm text-gray-700 grid grid-cols-1 gap-2">
+              <a  href={`/products/${product.id}`} className="mt-0 text-sm text-gray-700 grid grid-cols-1 gap-2">
                 {product.type === 0 ? (
                   // Specs for laptops
                   <>
@@ -244,7 +244,7 @@ export const ProductCardContainer = ({ url, authToken }) => {
                   <strong>Available Stock:</strong>{' '}
                   {TruncateText(product.availableStocks.toString(), 18)}
                 </p>
-              </div>
+              </a>
 
               {product.availableStocks > 0 ? (
                 <button
