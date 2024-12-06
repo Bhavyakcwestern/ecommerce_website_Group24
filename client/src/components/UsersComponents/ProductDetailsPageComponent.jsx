@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { FaBasketballBall } from "react-icons/fa";
 import { CardCarousal } from "./CardCarousal";
-import { getToken } from "../../utils/utils";
+import { convertDateToRequiredFormat, getToken } from "../../utils/utils";
+import { SERVER_ENDPOINT } from "../../assets/endpoints";
 
 export const ProductDetailsPageComponent = ({ productInfo }) => {
     if (!productInfo) {
@@ -21,7 +22,7 @@ export const ProductDetailsPageComponent = ({ productInfo }) => {
             quantity: quantityChange,
           });
           console.log('Payload is ', payload);
-          const response = await fetch('http://localhost:5000/v1/user/cart', {
+          const response = await fetch(`${SERVER_ENDPOINT}/v1/user/cart`, {
             method: 'POST',
             headers: {
               Authorization: getToken(),
@@ -143,7 +144,7 @@ export const ProductDetailsPageComponent = ({ productInfo }) => {
                                     <li>
                                         Release Date:{" "}
                                         {productInfo.releaseDate
-                                            ? new Date(productInfo.releaseDate).toLocaleDateString()
+                                            ? convertDateToRequiredFormat(productInfo.releaseDate)
                                             : "N/A"}
                                     </li>
                                 </ul>

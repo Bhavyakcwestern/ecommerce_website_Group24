@@ -3,11 +3,13 @@ import React, { useState } from 'react';
 import { FaFirstOrder, FaNewspaper, FaProductHunt, FaSignOutAlt, FaSlidersH } from 'react-icons/fa';
 import { ManageProductsTable } from './ManageProductsTable';
 import { CreateProductForm } from './CreateProductForm';
-// import { ManageProductsTable } from './ManageProductDetailsPageComponent';
+import { decodeJWT, getToken } from '../../utils/utils';
+import { useNavigate } from 'react-router-dom';
+import { CompletedOrdersComponent } from './CompletedOrdersComponent';
 
 export const ManageProductsPageComponents = () => {
-    const username = "John Doe";
-    const email = "johnsea@gmail.com";
+    const jwtPayload = decodeJWT(getToken());
+    const username = jwtPayload.email;
     const imgUrl = "https://ui-avatars.com/api/?background=random&name=" + username;
 
     const [isNavbarOpen, setIsNavBarOpen] = useState(false);
@@ -16,6 +18,11 @@ export const ManageProductsPageComponents = () => {
     const toggleNavBarOpen = () => {
         setIsNavBarOpen(!isNavbarOpen);
     };
+    const navigate = useNavigate();
+    const handleSignOut = () => {
+        localStorage.clear();
+        navigate("/");
+      };
 
    
     return (
@@ -51,7 +58,6 @@ export const ManageProductsPageComponents = () => {
                         {isNavbarOpen && (
                             <div className="text-center">
                                 <h4 className="font-semibold">{username}</h4>
-                                <p className="text-xs">{email}</p>
                             </div>
                         )}
                     </div>
@@ -86,6 +92,9 @@ export const ManageProductsPageComponents = () => {
                         <div
                             role="button"
                             className="flex justify-center items-center w-full p-3 rounded-lg hover:bg-gray-100"
+                            onClick={() => {
+                                handleSignOut();
+                            }}
                         >
                             <FaSignOutAlt className="text-xl" />
                             {isNavbarOpen && <span className="ml-4">Log Out</span>}
@@ -104,10 +113,7 @@ export const ManageProductsPageComponents = () => {
                 )}
 
                 {activePage === "manageOrders" && (
-                    <div>
-                        <h2 className="text-xl font-bold">Manage Orders</h2>
-                        <p>Order management content goes here.</p>
-                    </div>
+                    <CompletedOrdersComponent />
                 )}
             </div>
         </div>

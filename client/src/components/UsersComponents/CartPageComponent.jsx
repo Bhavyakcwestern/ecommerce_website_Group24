@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getToken } from '../../utils/utils';
+import { SERVER_ENDPOINT } from '../../assets/endpoints';
 
 export const CartPageComponent = () => {
     const [cartItems, setCartItems] = useState([]);
@@ -14,7 +15,7 @@ export const CartPageComponent = () => {
 
     const fetchCartItems = async () => {
         try {
-            const response = await fetch("http://localhost:5000/v1/user/cart", {
+            const response = await fetch(`${SERVER_ENDPOINT}/v1/user/cart`, {
                 headers: {
                     Authorization: "Bearer " + getToken(),
                 },
@@ -86,7 +87,7 @@ export const CartPageComponent = () => {
                 product_id,
                 quantity: quantityChange,
             });
-            const response = await fetch("http://localhost:5000/v1/user/cart", {
+            const response = await fetch(`${SERVER_ENDPOINT}/v1/user/cart`, {
                 method: "POST",
                 headers: {
                     Authorization: "Bearer " + getToken(),
@@ -110,7 +111,7 @@ export const CartPageComponent = () => {
     const handleCheckout = async () => {
         try {
             // Fetch the latest cart items to ensure stock availability
-            const responseCart = await fetch("http://localhost:5000/v1/user/cart", {
+            const responseCart = await fetch(`${SERVER_ENDPOINT}/v1/user/cart`, {
                 method: "GET",
                 headers: {
                     Authorization: getToken(),
@@ -137,7 +138,7 @@ export const CartPageComponent = () => {
     
             // Proceed with checkout if stock is valid
             const responseCheckout = await fetch(
-                "http://localhost:5000/v1/user/cart/checkout",
+                `${SERVER_ENDPOINT}/v1/user/cart/checkout`,
                 {
                     method: "POST",
                     headers: {

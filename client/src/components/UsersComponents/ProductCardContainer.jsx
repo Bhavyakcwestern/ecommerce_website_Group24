@@ -4,6 +4,7 @@ import { FaBasketballBall } from 'react-icons/fa';
 import { TruncateText } from '../../utils/utils';
 import { getToken } from '../../utils/utils';
 import { updateCartTotal } from '../CartContext';
+import { SERVER_ENDPOINT } from '../../assets/endpoints';
 
 
 const GetCartItems = async () => {
@@ -18,7 +19,7 @@ const GetCartItems = async () => {
     }
     
     // Fetch the cart data from the API
-    const response = await fetch('http://localhost:5000/v1/user/cart', {
+    const response = await fetch(`${SERVER_ENDPOINT}/v1/user/cart`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -125,7 +126,7 @@ export const ProductCardContainer = ({ url, authToken }) => {
         quantity: quantityChange,
       });
       console.log('Payload is ', payload);
-      const response = await fetch('http://localhost:5000/v1/user/cart', {
+      const response = await fetch(`${SERVER_ENDPOINT}/v1/user/cart`, {
         method: 'POST',
         headers: {
           Authorization: getToken(),

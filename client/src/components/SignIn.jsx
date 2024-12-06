@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { SERVER_ENDPOINT } from "../assets/endpoints";
 
 export const SignIn = () => {
   const [role, setRole] = useState("user"); // User role: admin or user
@@ -21,7 +22,7 @@ export const SignIn = () => {
         }
 
         // Sign Up API call
-        const response = await axios.post("http://localhost:5000/v1/auth/signup", {
+        const response = await axios.post(`${SERVER_ENDPOINT}/v1/auth/signup`, {
           email,
           password,
           userType: role === "admin" ? 0 : 1, // UserType: 0 = Admin, 1 = User
@@ -34,7 +35,7 @@ export const SignIn = () => {
         }
       } else {
         // Login API call
-        const response = await axios.post("http://localhost:5000/v1/auth/login", {
+        const response = await axios.post(`${SERVER_ENDPOINT}/v1/auth/login`, {
           email,
           password,
         });

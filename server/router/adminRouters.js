@@ -13,4 +13,6 @@ router.get("/products", middleware.jwtValidator, middleware.checkIfAdmin, adminC
 
 router.post("/products", middleware.jwtValidator, middleware.checkIfAdmin, adminController.createProduct);
 
+router.get("/completed-orders", middleware.jwtValidator, middleware.checkIfAdmin, adminController.getCompletedOrders);
+
 module.exports = router;
