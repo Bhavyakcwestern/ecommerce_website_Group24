@@ -1,9 +1,8 @@
 name: Build Docker Image
 
-on:
+on: 
   push:
-    tags:
-      - 'v*.*.*'
+    branches: '**'
 
 jobs:
   build:
@@ -35,33 +34,4 @@ jobs:
       - name: Push the Docker image
         id: push-docker-image
         run: docker push dubemezeagwu/ece9065-test:${{ env.version }}
-  
-  build:
-    name: Push Client Docker Image to Docker Hub
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2
 
-      - name: Set version tag
-        id: set-version
-        run: |
-          # Extract branch or commit SHA
-          VERSION=${GITHUB_REF##*/}  # This strips 'refs/heads/' from the full branch name
-          echo "version=$VERSION" >> $GITHUB_ENV
-
-      - name: Login to Docker Hub
-        id: docker-hub
-        env:
-          DOCKER_USERNAME: dubemezeagwu
-          DOCKER_PASSWORD: docker@123
-        run: |
-          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      - name: Build the Docker image
-        id: build-docker-image
-        run: |
-          ls -la
-          docker build -f ./client/Dockerfile -t dubemezeagwu/ece9065-client:${{ env.version }} .
-      - name: Push the Docker image
-        id: push-docker-image
-        run: docker push dubemezeagwu/ece9065-client:${{ env.version }}

@@ -12,8 +12,7 @@ COPY . .
 
 # Navigate to the client directory for the build
 WORKDIR /app/client
-RUN npm ci
-RUN npm run build
+RUN npm install
 
 EXPOSE 5173
 
